@@ -3,4 +3,7 @@ theme: jekyll-theme-minimal
 
 # Site title and description
 title: Book "Data Quality for Software Engineers"
+logo: DQ_Book_Logo300.png
 description: This is official website for the open-source book "Data Quality for Software Engineers"
+show_downloads: true
+google_analytics: G-78NWWZWFS4
