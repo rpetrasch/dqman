@@ -1,1 +1,6 @@
+# Select a theme for your site
+theme: jekyll-theme-minimal
 
+# Site title and description
+title: Book "Data Quality for Software Engineers"
+description: This is official website for the open-source book "Data Quality for Software Engineers"
