@@ -2,8 +2,8 @@
 theme: jekyll-theme-minimal
 
 # Site title and description
-title: Book "Data Quality for Software Engineers"
+title: Data Quality for Software Engineers
 logo: DQ_Book_Logo300.png
-description: This is official website for the open-source book "Data Quality for Software Engineers"
+description: Official website for the open-source book "Data Quality for Software Engineers" from Roland and Richard Petrasch
 show_downloads: true
 google_analytics: G-78NWWZWFS4
