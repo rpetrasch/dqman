@@ -1,4 +1,4 @@
-![Book "Data Quality for Software Engineers"(/assets/images/san-juan-mountains.jpg "San Juan Mountains")
+![Book "Data Quality for Software Engineers"(/assets/images/DQ_Book_Banner.png "DQ 4 SW Engineers Banner")
 
 # GitHub Repository: code examples for the book "Data Quality for Software Engineers"
 ## General information
