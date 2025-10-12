@@ -4,7 +4,7 @@
 ## General information
 - The book is open-source. You can download it here: [Download Page](https://sites.google.com/view/dq4swe/home)
 - The repository contains most of the code examples in the book.
-- Please note that this is a draftversion of the book and the code examples. We appreciate your feedback, ideas, discussion, and other contributions
+- Please note that this is a draft version (preprint) of the book and the code examples. We appreciate your feedback, ideas, discussion, and other contributions.
 - GitHub page: <http://dqman.org>
 
 ## Contact
