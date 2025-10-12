@@ -1,19 +1,11 @@
-# Welcome to Data Quality for Software Engineers
+# Welcome 
 
 This is the homepage for our book project, hosted on GitHub Pages.
 
-- Open-source book (PDF)
-- Code for the examples in the book
-- Discussion and feedback
-- Call for participation
+- Open-source book (PDF) download: Please visit the [Download Page](https://sites.google.com/view/dq4swe/home)
+- Code for the examples in the book: Hosted on [GitHub](https://github.com/rpetrasch/dqman)
+- Discussion and feedback: Can be found on the [dicussions section](https://github.com/rpetrasch/dqman/discussions)
+- Call for contribution / participation: Write us an email [Richard Petrasch](richardroland2004@gmail.com), [Roland Petrasch](roland.petrasch@gmail.com)
 
-<form action="YOUR_FORMSPREE_ENDPOINT_URL" method="POST">
-  <label for="email">Your Email Address:</label><br>
-  <input type="email" id="email" name="email" required><br><br>
-  
-  <!-- Add a hidden field to let Formspree know which page the submission came from -->
-  <input type="hidden" name="_next" value="https://rpetrasch.github.io/dqmap/thanks.html" />
-  
-  <button type="submit">Submit</button>
-</form>
+
 
