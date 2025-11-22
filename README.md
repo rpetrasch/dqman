@@ -1,4 +1,5 @@
 [![Book Data Quality for Software Engineers](/assets/images/DQ_Book_Banner.png)](https://dqman.org)
+[![Book Data Quality for Software Engineers](https://github.com/rpetrasch/dqman/blob/main/assets/images/DQ_Book_Banner.png)](https://dqman.org)
 
 # Code Examples for the Book 
 ## General information
