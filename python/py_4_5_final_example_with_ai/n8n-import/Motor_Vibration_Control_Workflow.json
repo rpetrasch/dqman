@@ -1,0 +1,498 @@
+{
+  "name": "Motor Vibration Control Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "http://simulate-service:5003/simulate",
+        "options": {}
+      },
+      "id": "Simulate Motor Data",
+      "name": "Simulate Motor Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        432,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://train-service:5001/train",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{$json}}"
+      },
+      "id": "Train Autoencoder",
+      "name": "Train Autoencoder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://detect-service:5002/detect",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{$json}}",
+        "headerParametersJson": "=",
+        "queryParametersJson": "="
+      },
+      "id": "Detect Anomalies",
+      "name": "Detect Anomalies",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        320
+      ],
+      "id": "f7e0cbcb-845c-4157-af80-8ada248d726b",
+      "name": "When chat message received",
+      "webhookId": "75b79f13-96e2-484a-b599-f830d591d2b8"
+    },
+    {
+      "parameters": {
+        "path": "motor-vibration/:mode",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "Webhook",
+      "name": "TriggerWH",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -176
+      ],
+      "webhookId": "36330a98-ab52-4952-9de6-80fd64da7df5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "3bc37315-ee14-49d4-a197-90f8c9483150",
+      "name": "TriggerMan",
+      "notesInFlow": true,
+      "notes": "DETECT"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "848a64ec-5778-47f3-8a32-e876f7c869d9",
+              "name": "chatInput",
+              "value": "={{ \"detect the anomalies in this motor vibration time series data. There are 5000 measurements (amplitude), sampling rate is 1000 samples per second. Normal frequencies of the motors are 25Hz and 67Hz. Here are comma separated measurements values for the vibrations):\\n\"}} {{ $json.vibration.join(', ') }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        160
+      ],
+      "id": "08d36d54-b157-4bbc-93bc-6c68d7dc84b8",
+      "name": "Create Prompt"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseKey": "data"
+        }
+      },
+      "id": "Respond",
+      "name": "Respond to Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://simulate-service:5003/simulate?inject_fault=false&noise=0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        -176
+      ],
+      "id": "8ff886e7-f731-4b1d-b078-ac7d2f22629a",
+      "name": "Get Clean Motor Vibration Data"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        864,
+        160
+      ],
+      "id": "4b05647b-20b9-4d77-b45a-dd5d6e6afd3b",
+      "name": "LLM: Phi",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const vibrationText = $json.vibration.join(',');\nconst prompt = `detect the anomalies in this motor vibration time series data. There are 5000 measurements (amplitude), sampling rate is 1000 samples per second. Normal frequencies of the motors are 25 and 67. Here are comma separated measurement values for the vibrations:\\n${vibrationText}`;\nconsole.log(prompt);\nreturn {\n  chatInput: prompt\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        160
+      ],
+      "id": "6b81b811-8568-466e-aa09-3affa65824db",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "model": "phi:latest",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        928,
+        320
+      ],
+      "id": "957784cd-64fc-48a2-b229-9ef85b91a9b9",
+      "name": "Ollama: Phi",
+      "credentials": {
+        "ollamaApi": {
+          "id": "UXhsiy9w6Jda9Xxa",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://simulate-service:5003/anomaly",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        160
+      ],
+      "id": "2ae56ba6-b506-4b50-949f-fea1c1ee4757",
+      "name": "Send to Motor Sim. LLM"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://simulate-service:5003/anomaly",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        928,
+        0
+      ],
+      "id": "1d1abcef-8a3b-4195-bcf0-47ada0bd0e2d",
+      "name": "Send to Motor Sim. AE"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.params.mode }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "train"
+            },
+            {
+              "value2": "detect",
+              "output": 1
+            },
+            {
+              "value2": "llm",
+              "output": 2
+            }
+          ]
+        },
+        "fallbackOutput": 3
+      },
+      "id": "Switch",
+      "name": "Train, Detect, LLM (Man.)",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.params.mode }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "train"
+            },
+            {
+              "value2": "detect",
+              "output": 1
+            },
+            {
+              "value2": "llm",
+              "output": 2
+            }
+          ]
+        },
+        "fallbackOutput": 3
+      },
+      "id": "458ca5b2-cf70-4fcf-be6e-96d6bfdb316b",
+      "name": "Train, Detect, LLM (WH)",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -208
+      ]
+    }
+  ],
+  "pinData": {
+    "TriggerMan": [
+      {
+        "json": {
+          "params": {
+            "mode": "llm"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Simulate Motor Data": {
+      "main": [
+        [
+          {
+            "node": "Detect Anomalies",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Train Autoencoder": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Anomalies": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Motor Sim. AE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "LLM: Phi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TriggerWH": {
+      "main": [
+        [
+          {
+            "node": "Train, Detect, LLM (WH)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TriggerMan": {
+      "main": [
+        [
+          {
+            "node": "Train, Detect, LLM (Man.)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Prompt": {
+      "main": [
+        [
+          {
+            "node": "LLM: Phi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook1": {
+      "main": [
+        []
+      ]
+    },
+    "Get Clean Motor Vibration Data": {
+      "main": [
+        [
+          {
+            "node": "Train Autoencoder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM: Phi": {
+      "main": [
+        [
+          {
+            "node": "Send to Motor Sim. LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        []
+      ]
+    },
+    "Ollama: Phi": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LLM: Phi",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Train, Detect, LLM (Man.)": {
+      "main": [
+        [
+          {
+            "node": "Get Clean Motor Vibration Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simulate Motor Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simulate Motor Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Train, Detect, LLM (WH)": {
+      "main": [
+        [
+          {
+            "node": "Get Clean Motor Vibration Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simulate Motor Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simulate Motor Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "302170ce-e15d-46e6-bc6b-47d0b13c16ff",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "205b80ee97e1beeab11d5da31d22a41d032963c180861609aa4c2229a72e39dd"
+  },
+  "id": "MotorVibrationControlWorkflow",
+  "tags": []
+}

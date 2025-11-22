@@ -1,0 +1,14 @@
+grammar Date;
+
+// Parser rule: Defines the syntactic structure
+date : YEAR HYPHEN MONTH HYPHEN DAY;
+
+// Lexer rules: Defines the tokens
+YEAR  : [0-9][0-9][0-9][0-9]; // A four-digit number
+MONTH : [0-9][0-9]; // A two-digit number
+DAY   : [0-9][0-9]; // A two-digit number
+HYPHEN : '-';
+WS    : [ \t\r\n]+ -> skip; // Skip whitespace
+
+
+
