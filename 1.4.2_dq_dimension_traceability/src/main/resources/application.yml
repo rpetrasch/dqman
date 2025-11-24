@@ -9,7 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update  # Options: validate | update | create | create-drop
-    show-sql: true       # Displays SQL queries in the console
+    show-sql: false       # Displays SQL queries in the console
     properties:
       hibernate:
         format_sql: true # Formats SQL output for readability
@@ -22,6 +22,6 @@ spring:
       revision_type_field_name: TPO_REVISAO_AUDITORIA
 
 server:
-  port: 8080            # Application will run on port 8080
+  port: 8080
 
 

@@ -15,6 +15,7 @@ df_adults = pd.DataFrame({
 })
 
 if __name__ == "__main__":
+    # Print the DataFrame for the test
     print("Test DataFrame:")
     print(df_adults)
     print()
@@ -26,6 +27,7 @@ if __name__ == "__main__":
     print(schema)
     print()
 
+    # Validate the DataFrame
     validation_result = validate(df_adults)
     print("Schema validation result:")
     print(validation_result)
