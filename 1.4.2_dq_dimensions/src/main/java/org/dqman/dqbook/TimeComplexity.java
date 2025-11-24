@@ -14,8 +14,8 @@ import static java.lang.Thread.sleep;
 /**
  * Time complexity analysis for consistency check
  */
-public class time_complexity {
-    private final static Logger LOGGER = LoggerFactory.getLogger(time_complexity.class);
+public class TimeComplexity {
+    private final static Logger LOGGER = LoggerFactory.getLogger(TimeComplexity.class);
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -64,9 +64,9 @@ public class time_complexity {
             startTime = System.currentTimeMillis();
             int numberOfOrders = n / 2;
             int numberOfCustomers = n / 2;
-            Map<Long, customer> customerMap = new HashMap<>();
+            Map<Long, Customer> customerMap = new HashMap<>();
             for (int c = 0; c < numberOfCustomers; c++) {
-                customerMap.put((long) c, new customer((long) c, "Customer" + c));
+                customerMap.put((long) c, new Customer((long) c, "Customer" + c));
             }
             for (int o = 0; o < numberOfOrders; o++) { // loop: for all orders
                 sleep(1); // simulate some processing

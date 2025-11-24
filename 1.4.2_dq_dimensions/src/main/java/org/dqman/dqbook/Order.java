@@ -5,13 +5,13 @@ import java.time.LocalDate;
 /**
  * Order entity
  */
-public class order {
+public class Order {
 
     private final Long orderId;
     private final Long customerId;
     private final LocalDate orderDate;
 
-    public order(Long orderId, Long customerId, LocalDate orderDate) {
+    public Order(Long orderId, Long customerId, LocalDate orderDate) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;

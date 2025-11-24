@@ -37,7 +37,9 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-envers</artifactId>
-            <version>7.1.9.Final</version>
+<!--            <version>${hibernate.version}</version> Error-->
+<!--            <version>7.1.9.Final</version> Let spring boot manage the version: Still error -->
+            <version>6.6.36.Final</version> <!--Use manual version-->
         </dependency>
         <!-- H2 Database (for testing purposes) -->
         <dependency>
@@ -49,15 +51,14 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.5</version>
+            <version>42.7.8</version>
         </dependency>
-
 
         <!-- Lombok (for reducing boilerplate code) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>1.18.42</version>
             <!--            <optional>true</optional>-->
             <scope>provided</scope>
         </dependency>
@@ -87,14 +88,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>                    <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
+                            <version>1.18.42</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

@@ -1,11 +1,19 @@
 [![Book Data Quality for Software Engineers](/assets/images/DQ_Book_Banner.png)](https://dqman.org)
 
 # Code Examples for the Book 
-## General information
+
+## General information for Java projects
 - The book is open-source. You can download it here: [Download Page](https://sites.google.com/view/dq4swe/home)
 - The repository contains most of the code examples in the book.
 - Please note that this is a draft version (preprint) of the book and the code examples. We appreciate your feedback, ideas, discussion, and other contributions.
 - GitHub page: <http://dqman.org>
+- Install JDK (22 or higher)
+- Activate Lombok and enable annotation processing in IDE
+- Install Maven, Docker, IDE (IDEA, VS Code, ...)
+
+## Other languages
+- For the C examples (folder C) you will need a C or C++ compiler
+- For the Python examples (folder python) please read the README.md
 
 ## Contact
 We are happy to hear from you. Ideas, code improvements, and other contributions are welcome!

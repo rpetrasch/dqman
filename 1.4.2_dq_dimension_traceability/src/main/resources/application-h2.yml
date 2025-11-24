@@ -24,4 +24,4 @@ spring:
       path: /h2-console  # Access it via http://localhost:8080/h2-console
 
 server:
-  port: 8080            # Application will run on port 8080
+  port: 8080

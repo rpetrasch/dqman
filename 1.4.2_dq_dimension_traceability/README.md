@@ -1,13 +1,14 @@
 # Introduction
-Example for traceabilty (using auto trails / revisions.
+Example for traceability (using auto trails / revisions.
 
 # Installation / test
-- make sure docker service is up and running
-- run docker compose for database container to be available
-- start DqTraceabilityApp (spring framework application)
+- Make sure docker service is up and running
+- Run docker compose for database container to be available
+- Start DqTraceabilityApp (spring framework application)
+- Test: use ProductAuditTest
 
 # ToDo
-- Write tests
+- Write more tests
 - Example for problems
 
 
