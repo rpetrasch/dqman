@@ -1,47 +1,55 @@
 """
-Example how to define a schema for a semi-structured dataset, and validate/clean/re-validate it
-as a 2-pass solution with data cleansing
+Orchestrator for the Data Quality Pipeline.
+Implements a multi-pass strategy: Validate (Fail) -> Cleanse -> Validate (Pass).
 """
 import pandas as pd
 from country_util import get_countries
-from schema_service import define_schema, validate
+# Import both validation and cleansing logic from the service
+from schema_service import define_schema, validate, cleanse_data
 
-# Create a small DataFrame with one row containing flawed data
+# Create a small DataFrame with flaws
+# - user_id: 0 and None (Invalid)
+# - age: "25" (Wrong Type), 150 (Out of bounds)
+# - height: "172" (Wrong Type), 310.6 (Out of bounds)
+# - country: "New York City" (Invalid)
 df_adults = pd.DataFrame({
-    "user_id":   [0, 1, 2, 3, 3, None],  # <-- 0 and None is not allowed
-    "age":       [22, 4, "25", 34, 150, 67],  # <-- 150 is outside our allowed age range
-    "height_cm": [100, 170.8, 160, 75.0, 310.6, "172"],  # <-- 310 is outside our allowed height range
-    "country":   ["United States", "Italy", "New York City", "Brazil", "Japan", "Kenya"]  # <-- New York City is not a country
+    "user_id":   [0, 1, 2, 3, 3, None],
+    "age":       [22, 4, "25", 34, 150, 67],
+    "height_cm": [100, 170.8, 160, 75.0, 310.6, "172"],
+    "country":   ["United States", "Italy", "New York City", "Brazil", "Japan", "Kenya"]
 })
 
 if __name__ == "__main__":
-    # Print the DataFrame for the test
-    print("Test DataFrame:")
+    print("--- Raw Data ---")
     print(df_adults)
     print()
 
-    # Define the schema
+    # 1. Setup phase: Initialize the central schema
     country_list = get_countries()
     schema = define_schema(country_list)
-    print("Schema:")
-    print(schema)
-    print()
+    print("--- Schema Initialized with Central Constraints ---")
 
-    # Validate the DataFrame
+    # 2. First pass: Validation (diagnostic)
+    # This will fail: show 'dirty' data details.
+    print("\n[Pass 1] Validating Raw Data...")
     validation_result = validate(df_adults)
-    print("Schema validation result:")
-    print(validation_result)
 
-    # Fix the data
-    print("Cleansing: Fix the data")
-    df_adults = df_adults.dropna(subset=["user_id"])  # Drop rows with missing user_id
-    df_adults = df_adults[df_adults["user_id"] > 0]  # Drop rows with user_id <= 0
-    df_adults.loc[~df_adults["age"].apply(lambda x: isinstance(x, int)), "age"] = None  # Check if age is an integer
-    df_adults.loc[df_adults["age"] > 120, "age"] = None  # Cap ages at 120 (or handle differently)
-    df_adults.loc[~df_adults["height_cm"].apply(lambda x: isinstance(x, float)), "height_cm"] = None  # Check if height is a float
-    df_adults.loc[~df_adults["country"].isin(country_list), "country"] = None  # Check for valid countries
+    if isinstance(validation_result, pd.DataFrame):
+        print(f"Found {len(validation_result)} data quality issues.")
+        # print(validation_result.head()) # Optional: print specific errors
+    else:
+        print(validation_result)
 
-    # Re-validate the DataFrame
-    print("Schema re-validation result:")
-    validation_result = validate(df_adults)
-    print(validation_result)
+    # 3. Processing phase: Data cleansing
+    # Ask the service to apply the constraints defined in the schema to fix the data.
+    print("\n[Processing] Applying Central Cleansing Rules...")
+    df_clean = cleanse_data(df_adults)
+
+    print("\n--- Cleaned Data ---")
+    print(df_clean)
+
+    # 4. Second pass: Re-validation (verification)
+    # This will pass.
+    print("\n[Pass 2] Re-Validating Cleaned Data...")
+    final_result = validate(df_clean)
+    print(final_result)
