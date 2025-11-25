@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>1.4.2_dq_dimensions</artifactId>
+    <name>1.4.2 DQ Dimensions (Consistency)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

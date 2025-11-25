@@ -4,17 +4,19 @@ services:
     image: apache/nifi:latest
     container_name: nifi
     ports:
-      - "8080:8080"
+      - "8088:8080"
       - "8443:8443"
     environment:
       # NiFi Web UI port
       - NIFI_WEB_HTTP_PORT=8080
+      - NIFI_WEB_HTTPS_PORT=
+      - NIFI_WEB_PROXY_HOST=localhost:8443,127.0.0.1:8443
       # JVM memory settings
       - NIFI_JVM_HEAP_INIT=512m
       - NIFI_JVM_HEAP_MAX=1024m
       # Enable secure communication
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
-      - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqVghvvgEvjnaLjFEB
+      - SINGLE_USER_CREDENTIALS_PASSWORD=NiFi123NiFi123!
     volumes:
       # Persist NiFi state across container restarts
       - nifi-state:/opt/nifi/nifi-current/state
@@ -24,7 +26,7 @@ services:
       - nifi-provenance:/opt/nifi/nifi-current/provenance_repository
       # Mount logs for easier debugging
       - nifi-logs:/opt/nifi/nifi-current/logs
-      # Optional: mount a directory for data input/output
+      # Mount a directory for data input/output
       - ./data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/nifi/"]
@@ -45,7 +47,7 @@ services:
       - POSTGRES_USER=nifi_user
       - POSTGRES_PASSWORD=nifi_password
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     networks:
       - nifi-network
     restart: unless-stopped

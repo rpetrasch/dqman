@@ -9,7 +9,12 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>2.1.1_data_types</artifactId>
-    <name>2.1.1 Data Types</name>
+    <artifactId>1.4.6_redundancy</artifactId>
+
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>

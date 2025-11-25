@@ -59,6 +59,7 @@
         <module>1.4.1.3_QbD</module>
         <module>1.4.2_dq_dimensions</module>
         <module>1.4.2_dq_dimension_traceability</module>
+        <module>1.4.6_redundancy</module>
         <module>2.1.1_data_types</module>
         <module>2.2.2_databases</module>
         <module>2.2.3_tx_acid_il</module>

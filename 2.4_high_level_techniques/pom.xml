@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>2.4_high_level_techniques</artifactId>
+    <name>2.4 High-Level Techniques</name>
 
     <dependencies>
         <dependency>
