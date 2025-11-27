@@ -3,4 +3,6 @@ id,name,city,status
 2,susan,new york,
 ,ralf,melbourne,
 4,,dubai,
-5,marie,,
+5,marie,null,
+7,Susan,new york,UNVERIFIED
+7,Susan,new york,UNVERIFIED

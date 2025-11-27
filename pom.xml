@@ -66,6 +66,7 @@
         <module>2.4_high_level_techniques</module>
         <module>4.4.1_java_predicates_and_streams</module>
         <module>4.4.3_apache_nifi</module>
+        <module>4.1_databricks</module>
     </modules>
 <!-- Test -->
     <build>

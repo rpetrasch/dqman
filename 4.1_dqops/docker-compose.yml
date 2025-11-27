@@ -1,0 +1,14 @@
+
+services:
+  dqops:
+    image: dqops/dqo
+    container_name: dqops
+    command: ["--dqo.cloud.api-key=${DQOPS_CLOUD_API_KEY}", "run"]
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${HOME}/dqops/userhome:/dqo/userhome
+    mem_limit: 4g
+    restart: unless-stopped
+    environment:
+      - DQOPS_CLOUD_API_KEY=${DQOPS_CLOUD_API_KEY}
