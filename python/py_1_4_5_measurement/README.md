@@ -1,5 +1,7 @@
 # 1.4.5 Measurement of Data Quality: An Example for Accuracy
 
+**Book:** Data Quality for Software Engineers (DQ4SWE)
+
 This small example project demonstrates the practical measurement of the **Accuracy** data quality dimension. It is based on **Section 1.4.5** of the book *Data Quality for Software Engineers* by Roland and Richard Petrasch.
 
 **At the time this example was last checked this chapter started from Page 104. Please reach out if that meanwhile has changed.**
