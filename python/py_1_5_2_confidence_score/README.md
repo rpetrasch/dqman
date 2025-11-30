@@ -27,10 +27,8 @@ In the context of **Data Quality (DQ)**, relying solely on an AI's raw output is
 1. **Clone or download** this repository.  
 2. **Create a virtual environment** (recommended):  
    `python -m venv .venv`
-   \# Windows  
-   `.venv\\Scripts\\activate`
-   \# macOS/Linux  
-   `source .venv/bin/activate`
+   `.venv\Scripts/activate` # Windows
+   `source .venv/bin/activate`# macOS/Linux
 
 3. Install dependencies:  
    This script requires Hugging Face Transformers and PyTorch. It also requires sentencepiece for the MarianMT tokenizer.  
@@ -43,25 +41,25 @@ Run the main script directly from your terminal:
 
 `python3 main.py`
 
-*Note: On the first run, the script will download the model weights (\~300MB) from the Hugging Face Hub.*
+*Note: On the first run, the script will download the model weights (~300MB) from the Hugging Face Hub.*
 
 ## **📊 Example Output & Interpretation**
 
 The script compares two inputs: a simple sentence and a complex sentence.
 
-### **1\. Simple Input**
+### **1. Simple Input**
 
 Input: "The bank is closed today."  
 Translation: "Die Bank ist heute geschlossen."  
-Confidence: \~87.7%
+Confidence: ~87.7%
 
 * **Interpretation:** The model has high confidence because the vocabulary is common and the sentence structure is standard.
 
-### **2\. Complex Input**
+### **2. Complex Input**
 
 Input: "The elderly woman's sycophantic praise for the king's pulchritudinous visage..."  
 Translation: "Das sykophantische Lob der älteren Frau für das pulchritudinöse Bild..."  
-Confidence: \~75.3% (Average) / 23.6% (Minimum)
+Confidence: ~75.3% (Average) / 23.6% (Minimum)
 
 * **Interpretation:** While the *average* confidence is decent, the *minimum* confidence drops drastically (23.6%). This low score signals a potential data quality issue—the model is "guessing" on specific, rare words (like "accismus" or "lypophrenia").
 
