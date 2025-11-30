@@ -1,13 +1,16 @@
-package org.dqman;
+package org.dqman.java.streamspredicates;
 
 import java.util.function.Predicate;
 
+/**
+ * This class contains predefined data quality rules for quotations.
+ */
 public class QuotationDataQualityRules {
 
     /**
      * Rule 1: The expiration date must be after the issue date.
      */
-    public static final Predicate<org.dqman.Quotation> IS_EXPIRATION_DATE_VALID =
+    public static final Predicate<Quotation> IS_EXPIRATION_DATE_VALID =
             q -> q.expirationDate().isAfter(q.issueDate());
 
     /**
