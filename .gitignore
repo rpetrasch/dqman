@@ -46,3 +46,7 @@ replay_pid*
 **/models
 
 **/.DS_Store
+
+# add your virtual environment if you follow these new standards of having hem in the repo folder.
+
+.venv/
