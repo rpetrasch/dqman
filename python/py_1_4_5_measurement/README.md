@@ -57,9 +57,9 @@ The script will then process the data and output the validation results.
 ## **Example Output**
 
 Below is an example of the program's execution flow:
-
+```python
 Test DataFrame:  
-   user\_id   age  
+   user_id   age  
 0        1    18  
 1        2    16  
 2        3    25  
@@ -67,40 +67,40 @@ Test DataFrame:
 4        5   150  
 5        6    67  
 6        7   200  
-7        8    \-1  
+7        8    -1  
 8        9    45  
-9       10  \<NA\>
+9       10  <NA>
 
 Enter the minimum age: 18  
 Enter the maximum age: 80
 
-1\. Schema Validation (Errors)  
-The script identifies values that fail the hard schema check (e.g., age 16 is below 18, \-1 is invalid).  
+1. Schema Validation (Errors)  
+The script identifies values that fail the hard schema check (e.g., age 16 is below 18, -1 is invalid).  
 Schema validation result:  
-   schema\_context column  failure\_case  index  
-0         Column     age          \<NA\>      9  
+   schema_context column  failure_case  index  
+0         Column     age          <NA>      9  
 2         Column     age            16      1  
 3         Column     age           200      6  
-4         Column     age            \-1      7
+4         Column     age            -1      7
 
-2\. Statistical Validation (Warnings)  
+2. Statistical Validation (Warnings)  
 After filtering errors, it checks for outliers. For example, ages like 102 or 150 might be flagged as warnings if they exceed statistical bounds or the domain max.  
-\--------------------------------------------------  
+--------------------------------------------------  
 a) Errors:  
 ... (List of invalid records) ...  
-\--------------------------------------------------  
+--------------------------------------------------  
 b) Warning:  
 0     18  
 3    102  
 4    150  
 Name: age, dtype: Int64  
-\--------------------------------------------------  
+--------------------------------------------------  
 c) OK:  
-   user\_id  age  
+   user_id  age  
 2        3   25  
 5        6   67  
 8        9   45
-
+```
 ## **Methodology Details**
 
 ### **Accuracy Rate Calculation**
