@@ -1,13 +1,13 @@
 """
 org.dqman.Main module for explainable AI confidence using an LMM iike llama3
 """
+
 import ollama
 
 if __name__ == "__main__":
     # Review text (user inpute) we want to analyze
     review_text = "The service was slow, but the food was absolutely amazing."
     model_to_use = "llama3"
-
 
     # 1: "Black Box" (No Explainability)
     print("--- 1. 'Black Box' Example ---")
@@ -16,8 +16,7 @@ if __name__ == "__main__":
     '{review_text}'
     """
     response_no_xai = ollama.chat(
-        model=model_to_use,
-        messages=[{'role': 'user', 'content': prompt_no_xai}]
+        model=model_to_use, messages=[{"role": "user", "content": prompt_no_xai}]
     )
     print(f"Prompt: {prompt_no_xai}")
     print(f"LLM Answer: {response_no_xai['message']['content']}\n")
@@ -32,12 +31,10 @@ if __name__ == "__main__":
     Review: '{review_text}'
     """
     response_with_xai = ollama.chat(
-        model=model_to_use,
-        messages=[{'role': 'user', 'content': prompt_with_xai}]
+        model=model_to_use, messages=[{"role": "user", "content": prompt_with_xai}]
     )
     print(f"Prompt: {prompt_with_xai}")
     print(f"LLM Answer:\n{response_with_xai['message']['content']}\n")
-
 
     # 3: "Post-Hoc Rationalization")
     print("--- 3. 'Post-Hoc Rationalization' Example ---")
@@ -49,8 +46,7 @@ if __name__ == "__main__":
     Review: '{review_text}'
     """
     response_with_xai = ollama.chat(
-        model=model_to_use,
-        messages=[{'role': 'user', 'content': prompt_with_xai}]
+        model=model_to_use, messages=[{"role": "user", "content": prompt_with_xai}]
     )
     print(f"Prompt: {prompt_with_xai}")
     print(f"LLM Answer:\n{response_with_xai['message']['content']}")

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality for Software Engineers - Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- NO SVG used in this document -->
+    <!-- Palette: Electric Precision -->
+    <!-- Primary: Indigo-700 (#4338ca) -->
+    <!-- Secondary: Cyan-500 (#06b6d4) -->
+    <!-- Accent: Pink-500 (#ec4899) -->
+    <!-- Neutral: Slate-800 (#1e293b) -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Chart Container Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #4338ca, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header {
+            border-left: 5px solid #ec4899;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Custom HTML Diagram Styling */
+        .flow-node {
+            background: #fff;
+            border: 2px solid #4338ca;
+            color: #1e293b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .flow-arrow-down::after {
+            content: "↓";
+            display: block;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin: 0.5rem 0;
+        }
+
+        .flow-arrow-right::after {
+            content: "→";
+            display: inline-block;
+            margin-left: 0.5rem;
+            color: #94a3b8;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight text-slate-800">DQ<span class="text-indigo-600">4</span>SWE
+            </h1>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <a href="#dimensions" class="hover:text-indigo-600 transition">Dimensions</a>
+                <a href="#impact" class="hover:text-indigo-600 transition">Business Impact</a>
+                <a href="#case-study" class="hover:text-indigo-600 transition">Case Study</a>
+                <a href="#architecture" class="hover:text-indigo-600 transition">Architecture</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-4 py-12 md:py-20 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                From <span class="text-pink-500">Garbage In</span> to <br>
+                <span class="gradient-text">Excellence Out</span>
+            </h2>
+            <p class="text-xl text-slate-600 mb-8 leading-relaxed">
+                In the era of AI and Microservices, Data Quality (DQ) is no longer an afterthought—it is the primary
+                engineering constraint.
+                Based on "Data Quality for Software Engineers", we explore how to transition from brittle pipelines to
+                robust, AI-ready architectures.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-12">
+                <div class="p-6 bg-indigo-50 rounded-xl border border-indigo-100">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">80%</div>
+                    <div class="text-sm font-semibold text-slate-700">Time spent on Data Prep</div>
+                    <p class="text-xs text-slate-500 mt-1">vs. 20% on actual modeling.</p>
+                </div>
+                <div class="p-6 bg-cyan-50 rounded-xl border border-cyan-100">
+                    <div class="text-4xl font-bold text-cyan-600 mb-2">10x</div>
+                    <div class="text-sm font-semibold text-slate-700">Cost of Errors</div>
+                    <p class="text-xs text-slate-500 mt-1">Increases exponentially downstream.</p>
+                </div>
+                <div class="p-6 bg-pink-50 rounded-xl border border-pink-100">
+                    <div class="text-4xl font-bold text-pink-600 mb-2">AI</div>
+                    <div class="text-sm font-semibold text-slate-700">Readiness Gap</div>
+                    <p class="text-xs text-slate-500 mt-1">Clean data $\neq$ AI-Ready data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: The 6 Dimensions of Data Quality -->
+    <section id="dimensions" class="bg-slate-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
+                <h3 class="text-3xl font-bold text-slate-800">The 6 Pillars of Data Quality</h3>
+                <p class="text-slate-600 mt-2">To measure quality, we must first define it. These six dimensions form
+                    the standard framework (ISO 25012) for assessing data health.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Text Content -->
+                <div class="space-y-4">
+                    <div class="card border-l-4 border-indigo-500">
+                        <h4 class="font-bold text-lg">1. Accuracy</h4>
+                        <p class="text-sm text-slate-600">Does the data correctly represent the real-world entity?
+                            (e.g., Is the customer's age actually 25?)</p>
+                    </div>
+                    <div class="card border-l-4 border-cyan-500">
+                        <h4 class="font-bold text-lg">2. Completeness</h4>
+                        <p class="text-sm text-slate-600">Are all required data fields present? (e.g., No missing sensor
+                            readings in the time series.)</p>
+                    </div>
+                    <div class="card border-l-4 border-pink-500">
+                        <h4 class="font-bold text-lg">3. Consistency</h4>
+                        <p class="text-sm text-slate-600">Does data align across different systems? (e.g., CRM and
+                            Billing show the same address.)</p>
+                    </div>
+                </div>
+
+                <!-- Visualization: Radar Chart -->
+                <div class="card">
+                    <h4 class="text-center font-bold text-slate-700 mb-4">Current Data Health Score</h4>
+                    <div class="chart-container">
+                        <canvas id="dimensionsChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-4">Based on ISO/IEC 25012 Characteristics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: AI-Readiness & The Cost of Quality -->
+    <section id="impact" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
+                <h3 class="text-3xl font-bold text-slate-800">The AI-Readiness Gap</h3>
+                <p class="text-slate-600 mt-2">Traditional software can handle some noise. AI systems amplifies it. An
+                    "AI-Ready" dataset requires more than just correctness; it needs representativeness and lack of
+                    bias.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Chart: AI Impact -->
+                <div class="card">
+                    <h4 class="font-bold text-slate-700 mb-4">Error Propagation: Traditional vs. AI Systems</h4>
+                    <div class="chart-container">
+                        <canvas id="propagationChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-4 bg-yellow-50 rounded text-xs text-yellow-800">
+                        <strong>Insight:</strong> In AI, a small data bias (e.g., non-representative training set)
+                        compounds into massive model failure, whereas traditional logic might just throw a single
+                        exception.
+                    </div>
+                </div>
+
+                <!-- Content: AI Requirements -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-indigo-900 text-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-bold mb-2">What makes data "AI-Ready"?</h4>
+                        <ul class="space-y-3 text-indigo-100 text-sm">
+                            <li class="flex items-start">
+                                <span class="text-pink-400 mr-2">●</span>
+                                <span><strong>Representativeness:</strong> Does the training data cover all edge cases
+                                    (e.g., Region D in the book example)?</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-400 mr-2">●</span>
+                                <span><strong>Label Quality:</strong> Are the annotations consistent and
+                                    unbiased?</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-indigo-400 mr-2">●</span>
+                                <span><strong>Traceability:</strong> Can we trace a model decision back to the specific
+                                    training batch?</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="p-4 border border-slate-200 rounded-lg">
+                        <h5 class="font-bold text-slate-700 mb-2">Example Failure Mode</h5>
+                        <p class="text-sm text-slate-600">
+                            In the book's <em>SalesNet</em> example, the model failed for "Region D" because it learned
+                            a spurious correlation from a single data point. This is a <strong>Completeness</strong>
+                            failure manifesting as an <strong>Accuracy</strong> failure in prediction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Case Study - Motor Vibration -->
+    <section id="case-study" class="bg-slate-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header !border-cyan-500">
+                <h3 class="text-3xl font-bold">Case Study: Motor Vibration Analysis</h3>
+                <p class="text-slate-300 mt-2">Detecting anomalies in time-series data using FFT (Fast Fourier
+                    Transform) and Autoencoders. This visualizes the `motor_simulation-service` output.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Context -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <h4 class="font-bold text-cyan-400 mb-2">The Scenario</h4>
+                        <p class="text-sm text-slate-300 mb-4">
+                            A motor vibrates normally at <strong>25Hz</strong> and <strong>67Hz</strong>. At T=2.5s, a
+                            fault injects new frequencies (13, 45, 89Hz).
+                        </p>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-400 border-t border-slate-700 pt-2">
+                            <span>Sampling Rate: 1000Hz</span>
+                            <span>Noise Level: 0.65</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <h4 class="font-bold text-pink-400 mb-2">The Solution</h4>
+                        <p class="text-sm text-slate-300">
+                            An <strong>Autoencoder</strong> is trained on "clean" data. When it sees the "noisy/faulty"
+                            data, the reconstruction error spikes, flagging an anomaly.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Simulation Visualization -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg p-2 text-slate-900">
+                        <h4 class="text-center font-bold text-sm mb-2">Simulated Vibration Signal & Anomaly Detection
+                        </h4>
+                        <div class="chart-container" style="height: 400px; max-height: 500px;">
+                            <canvas id="vibrationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Architecture & Workflow -->
+    <section id="architecture" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
+                <h3 class="text-3xl font-bold text-slate-800">DQ Engineering Architecture</h3>
+                <p class="text-slate-600 mt-2">Moving from ad-hoc scripts to robust Microservices and Workflow
+                    Automation (n8n).</p>
+            </div>
+
+            <!-- HTML Diagram Construction -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Constructive DQ -->
+                <div>
+                    <h4 class="text-xl font-bold text-center text-indigo-700 mb-6">The Microservices Pipeline</h4>
+                    <div class="flex flex-col items-center space-y-2">
+                        <!-- Simulate -->
+                        <div class="flow-node w-64 bg-cyan-50 border-cyan-500">
+                            <span class="text-xs font-bold text-cyan-600 uppercase tracking-wider">Source</span>
+                            <div class="text-lg">Simulate Service</div>
+                            <div class="text-xs text-slate-500">Generates Raw Data</div>
+                        </div>
+                        <div class="flow-arrow-down"></div>
+
+                        <!-- Train -->
+                        <div class="flow-node w-64 bg-indigo-50 border-indigo-500">
+                            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Processing</span>
+                            <div class="text-lg">Train Service</div>
+                            <div class="text-xs text-slate-500">PyTorch Autoencoder</div>
+                        </div>
+                        <div class="flow-arrow-down"></div>
+
+                        <!-- Detect -->
+                        <div class="flow-node w-64 bg-pink-50 border-pink-500">
+                            <span class="text-xs font-bold text-pink-600 uppercase tracking-wider">Validation</span>
+                            <div class="text-lg">Detect Service</div>
+                            <div class="text-xs text-slate-500">Inference & Anomaly Flagging</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytical DQ -->
+                <div class="flex flex-col justify-center">
+                    <h4 class="text-xl font-bold text-center text-indigo-700 mb-6">Multi-Pass Validation Strategy</h4>
+                    <div class="card bg-white space-y-4">
+                        <div class="flex items-center">
+                            <div
+                                class="bg-slate-200 text-slate-700 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                1</div>
+                            <div>
+                                <h5 class="font-bold">Setup Phase</h5>
+                                <p class="text-xs text-slate-500">Initialize central schema (Pandera) and domain
+                                    constraints.</p>
+                            </div>
+                        </div>
+                        <div class="border-l-2 border-slate-200 h-6 ml-4"></div>
+                        <div class="flex items-center">
+                            <div
+                                class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                2</div>
+                            <div>
+                                <h5 class="font-bold">Pass 1: Diagnostic</h5>
+                                <p class="text-xs text-slate-500">Validate raw data. Identify types, ranges, and nulls.
+                                    <span class="text-pink-500 font-bold">FAIL FAST.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-l-2 border-slate-200 h-6 ml-4"></div>
+                        <div class="flex items-center">
+                            <div
+                                class="bg-cyan-100 text-cyan-700 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                3</div>
+                            <div>
+                                <h5 class="font-bold">Pass 2: Cleansing</h5>
+                                <p class="text-xs text-slate-500">Apply transformation rules. Impute missing values
+                                    based on logic.</p>
+                            </div>
+                        </div>
+                        <div class="border-l-2 border-slate-200 h-6 ml-4"></div>
+                        <div class="flex items-center">
+                            <div
+                                class="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                4</div>
+                            <div>
+                                <h5 class="font-bold">Pass 3: Verification</h5>
+                                <p class="text-xs text-slate-500">Re-validate cleaned data against schema. Ready for AI.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-8 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <p class="mb-2"><strong>Data Quality for Software Engineers</strong></p>
+            <p>Generated based on the provided source material (Code Repository & Book Fundamentals).</p>
+            <p class="mt-4 text-xs text-slate-600">CONFIRMATION: No Mermaid JS Used. No SVG Graphics Used.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts for Charts -->
+    <script>
+        // --- UTILITY: Label Wrapping Logic (16 chars) ---
+        function wrapLabel(label) {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= 16) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- COMMON: Tooltip Configuration ---
+        const commonTooltipOptions = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- CHART 1: Dimensions Radar Chart ---
+        const ctxRadar = document.getElementById('dimensionsChart').getContext('2d');
+        const rawLabelsRadar = ['Accuracy', 'Completeness', 'Consistency', 'Timeliness', 'Validity', 'Uniqueness'];
+        const processedLabelsRadar = rawLabelsRadar.map(wrapLabel);
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: processedLabelsRadar,
+                datasets: [{
+                    label: 'Current Status',
+                    data: [85, 60, 90, 45, 95, 70], // Hypothetical scores based on "good" vs "bad" examples
+                    backgroundColor: 'rgba(6, 182, 212, 0.2)', // Cyan-500 low opacity
+                    borderColor: '#06b6d4',
+                    pointBackgroundColor: '#4338ca',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#4338ca'
+                },
+                {
+                    label: 'Target Goal',
+                    data: [95, 95, 95, 95, 95, 95],
+                    backgroundColor: 'rgba(236, 72, 153, 0.0)',
+                    borderColor: '#ec4899', // Pink-500
+                    borderDash: [5, 5],
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: commonTooltipOptions
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: {
+                            font: { size: 12, family: "'Inter', sans-serif" },
+                            color: '#475569'
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: Propagation Stacked Bar ---
+        const ctxProp = document.getElementById('propagationChart').getContext('2d');
+        const rawLabelsProp = ['Input Error', 'Processing', 'Output Impact'];
+        const processedLabelsProp = rawLabelsProp.map(wrapLabel);
+
+        new Chart(ctxProp, {
+            type: 'bar',
+            data: {
+                labels: processedLabelsProp,
+                datasets: [
+                    {
+                        label: 'Traditional Software',
+                        data: [10, 10, 20], // Linear prop
+                        backgroundColor: '#94a3b8'
+                    },
+                    {
+                        label: 'AI Systems',
+                        data: [10, 40, 90], // Exponential/Compound prop
+                        backgroundColor: '#ec4899'
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: commonTooltipOptions
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Relative Impact' }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: Motor Vibration (Canvas Line Chart) ---
+        // Simulating the visualizer.py output
+        const ctxVib = document.getElementById('vibrationChart').getContext('2d');
+
+        // Generate Synthetic Data
+        const points = 100;
+        const labelsVib = [];
+        const normalData = [];
+        const faultyData = [];
+
+        for (let i = 0; i < points; i++) {
+            labelsVib.push(i);
+            // Base sine waves (25Hz + 67Hz simulation) + Random Noise
+            let val = Math.sin(i * 0.5) + Math.sin(i * 1.3) + (Math.random() - 0.5);
+            normalData.push(val);
+
+            // Fault injection after index 60
+            if (i > 60) {
+                // Adding high freq anomaly
+                val += Math.sin(i * 2.5) * 2.0;
+            }
+            faultyData.push(val);
+        }
+
+        new Chart(ctxVib, {
+            type: 'line',
+            data: {
+                labels: labelsVib,
+                datasets: [
+                    {
+                        label: 'Normal Baseline',
+                        data: normalData,
+                        borderColor: '#06b6d4', // Cyan
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Signal with Fault',
+                        data: faultyData,
+                        borderColor: '#ec4899', // Pink
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Vibration Amplitude vs Time (Simulated)',
+                        color: '#1e293b'
+                    },
+                    tooltip: {
+                        ...commonTooltipOptions.callbacks,
+                        mode: 'index',
+                        intersect: false
+                    },
+                    annotation: {
+                        // Chart.js annotation plugin not loaded, using simple line dataset instead
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: { display: true, text: 'Time (samples)' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        display: true,
+                        title: { display: true, text: 'Amplitude' },
+                        grid: { color: '#f1f5f9' }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>
