@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failing AI on "Clean" Data | Data Quality for Software Engineers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Choosing a vibrant palette: Deep Purple/Cyberpunk theme -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e;
+            /* Dark Purple/Black */
+            color: #eaeaea;
+        }
+
+        .card {
+            background-color: #16213e;
+            /* Slightly lighter dark blue/purple */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .text-accent {
+            color: #4cc9f0;
+            /* Bright Cyan */
+        }
+
+        .text-accent-secondary {
+            color: #f72585;
+            /* Neon Pink */
+        }
+
+        .text-accent-tertiary {
+            color: #7209b7;
+            /* Purple */
+        }
+
+        /* Chart Container Styling Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+            <span class="text-white">Failing AI on</span> <br>
+            <span class="text-accent-secondary">"Clean" Data</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            A Case Study from <em>Data Quality for Software Engineers (DQ4SWE)</em>
+        </p>
+        <div class="mt-6 flex justify-center gap-4">
+            <span class="bg-gray-800 px-4 py-2 rounded-full text-sm font-semibold border border-gray-600">Chapter
+                1.6.1</span>
+            <span class="bg-gray-800 px-4 py-2 rounded-full text-sm font-semibold border border-gray-600">AI
+                Quality</span>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Intro Section -->
+        <section class="md:col-span-2 card p-8 border-l-4 border-accent">
+            <h2 class="text-3xl font-bold mb-4 text-white">The Paradox</h2>
+            <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                We often hear "Garbage In, Garbage Out." But what if the data isn't garbage? What if it has
+                <strong>no nulls</strong>, <strong>valid formats</strong>, and <strong>correct ranges</strong>?
+            </p>
+            <p class="text-lg text-gray-300 leading-relaxed">
+                This infographic visualizes an experiment where a Neural Network was trained on technically "clean"
+                synthetic sales data.
+                Despite the data being error-free, the model failed catastrophically in specific regions.
+                The culprit? <strong>Distributional Data Quality</strong> issues: Homogeneity and Small Data.
+            </p>
+        </section>
+
+        <!-- Section 1: The True Signal -->
+        <section class="card p-6 flex flex-col">
+            <h3 class="text-2xl font-bold mb-2 text-accent">1. The "True" Signal</h3>
+            <p class="text-gray-400 text-sm mb-4">The mathematical rules generating the data.</p>
+            <p class="text-gray-300 mb-6">
+                The data was generated with specific rules. Sales generally <span
+                    class="font-bold text-green-400">increase over time</span>.
+                However, <strong>Product 'b'</strong> has a negative coefficient (sales go down). Crucially,
+                <strong>Region</strong> has <em>zero</em> effect on the price.
+            </p>
+            <div class="flex-grow flex items-center justify-center">
+                <div class="chart-container">
+                    <canvas id="trueSignalChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Distribution Trap -->
+        <section class="card p-6 flex flex-col">
+            <h3 class="text-2xl font-bold mb-2 text-accent-secondary">2. The Hidden Trap</h3>
+            <p class="text-gray-400 text-sm mb-4">Training data record counts by Region.</p>
+            <p class="text-gray-300 mb-6">
+                The dataset is "clean" but <strong>imbalanced</strong>. Regions A and B have plenty of data.
+                Region C is homogeneous (missing Product A). Region D is the "Small Data" problem:
+                it contains only <strong>1 single record</strong>.
+            </p>
+            <div class="flex-grow flex items-center justify-center">
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Catastrophic Failure -->
+        <section class="md:col-span-2 card p-8 bg-gradient-to-r from-[#16213e] to-[#1f1a2e]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-accent-secondary">3. The Catastrophic Failure</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        When we ask the model to predict sales for <strong>Day 500</strong>, it works perfectly for
+                        Region A.
+                        But look at <strong>Region D</strong>.
+                    </p>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        For <strong>Product 'b'</strong>, the sales should be near zero (negative trend).
+                        Instead, the model predicts a massive positive number.
+                    </p>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-red-500/30 mt-4">
+                        <h4 class="font-bold text-red-400 mb-2">Why? Spurious Correlation.</h4>
+                        <p class="text-sm text-gray-400">
+                            Because Region D only had 1 training example (which happened to be high), the model learned
+                            a false rule:
+                            <em>"Region D = High Sales"</em>. It ignored the Product 'b' rule entirely.
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="chart-container" style="max-width: 100%;">
+                        <canvas id="failureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: The Autopsy (SHAP) -->
+        <section class="md:col-span-2 card p-8">
+            <h3 class="text-2xl font-bold mb-2 text-accent">4. The Autopsy (XAI Analysis)</h3>
+            <p class="text-gray-300 mb-6">
+                Using <strong>SHAP (SHapley Additive exPlanations)</strong>, we can see <em>why</em> the model made the
+                decision.
+                Below compares a GOOD prediction (Region A) vs. a BAD prediction (Region D).
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Good Prediction -->
+                <div class="bg-[#0f172a] p-4 rounded-lg">
+                    <h4 class="font-bold text-green-400 mb-2 text-center">Good Prediction (Region A)</h4>
+                    <p class="text-xs text-gray-400 text-center mb-4">Model correctly values 'Product' and 'Day'.</p>
+                    <div class="chart-container">
+                        <canvas id="shapGoodChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bad Prediction -->
+                <div class="bg-[#0f172a] p-4 rounded-lg border border-red-500/20">
+                    <h4 class="font-bold text-red-400 mb-2 text-center">Bad Prediction (Region D)</h4>
+                    <p class="text-xs text-gray-400 text-center mb-4">Model insanely overvalues 'Region' (Spurious).</p>
+                    <div class="chart-container">
+                        <canvas id="shapBadChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="md:col-span-2 card p-8 bg-gray-800 text-center">
+            <h3 class="text-2xl font-bold mb-4 text-white">The Lesson</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <h4 class="text-accent font-bold mb-2">Representativeness</h4>
+                    <p class="text-sm text-gray-300">Data must reflect the variety of the real world. Missing categories
+                        (like in Region C) create blind spots.</p>
+                </div>
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <h4 class="text-accent font-bold mb-2">Sufficiency</h4>
+                    <p class="text-sm text-gray-300">One data point is technically "clean" but statistically useless. It
+                        leads to overfitting and spurious correlations.</p>
+                </div>
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <h4 class="text-accent font-bold mb-2">Context</h4>
+                    <p class="text-sm text-gray-300">DQ checks must go beyond syntax. We need to validate the
+                        statistical distribution of the data.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        <p>Generated based on "Data Quality for Software Engineers" | Canvas Infographics</p>
+        <!-- Confirmation of constraints -->
+        <!-- No SVG Graphics Used -->
+        <!-- No Mermaid JS Used -->
+        <!-- Palette: Deep Purple / Cyan / Pink -->
+    </footer>
+
+    <script>
+        // --- HELPER FUNCTION: Label Wrapping ---
+        function wrapLabel(label) {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxLength) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- HELPER OBJECT: Tooltip Configuration ---
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- 1. TRUE SIGNAL CHART ---
+        // Visualizing: Sales = Base + (Day * 0.1) + (ProductEffect)
+        const ctxTrue = document.getElementById('trueSignalChart').getContext('2d');
+        const days = [0, 100, 200, 300, 400, 500];
+        // Product A: 50 + (Day*0.1)
+        const dataA = days.map(d => 50 + (d * 0.1));
+        // Product B: 50 + (Day*0.1) - (Day*0.2) -> 50 - (Day*0.1)
+        const dataB = days.map(d => 50 - (d * 0.1));
+        // Product C: 50 + (Day*0.1)
+        const dataC = days.map(d => 50 + (d * 0.1));
+
+        new Chart(ctxTrue, {
+            type: 'line',
+            data: {
+                labels: days.map(d => `Day ${d}`), // Labels short enough, no wrap needed
+                datasets: [
+                    {
+                        label: 'Product A (Trend Up)',
+                        data: dataA,
+                        borderColor: '#4cc9f0', // Cyan
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product B (Trend Down)',
+                        data: dataB,
+                        borderColor: '#f72585', // Pink
+                        borderDash: [5, 5],
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product C (Trend Up)',
+                        data: dataC,
+                        borderColor: '#7209b7', // Purple
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'True Sales Signal Over Time', color: '#fff' },
+                    legend: { labels: { color: '#ccc' } },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    y: { grid: { color: '#333' }, ticks: { color: '#ccc' }, title: { display: true, text: 'Sales Amount', color: '#aaa' } },
+                    x: { grid: { color: '#333' }, ticks: { color: '#ccc' } }
+                }
+            }
+        });
+
+        // --- 2. DISTRIBUTION CHART ---
+        // Region A: 480, B: 480, C: 39, D: 1
+        const ctxDist = document.getElementById('distributionChart').getContext('2d');
+        new Chart(ctxDist, {
+            type: 'bar',
+            data: {
+                labels: ['Region A', 'Region B', 'Region C', 'Region D'], // Labels short
+                datasets: [{
+                    label: 'Training Records',
+                    data: [480, 480, 39, 1],
+                    backgroundColor: [
+                        '#4cc9f0', '#4cc9f0', '#f72585', '#f72585' // Highlighting the problem regions
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    title: { display: true, text: 'Training Data Distribution', color: '#fff' },
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    x: { grid: { color: '#333' }, ticks: { color: '#ccc' }, type: 'logarithmic' }, // Log scale to show '1' vs '480'
+                    y: { grid: { display: false }, ticks: { color: '#ccc' } }
+                }
+            }
+        });
+
+        // --- 3. FAILURE CHART ---
+        // Comparing Actual vs Predicted for Day 500
+        const ctxFail = document.getElementById('failureChart').getContext('2d');
+        const rawLabelsFail = ['Region A / Prod A', 'Region A / Prod B', 'Region D / Prod A', 'Region D / Prod B'];
+        const wrappedLabelsFail = rawLabelsFail.map(wrapLabel); // Implementing wrap
+
+        new Chart(ctxFail, {
+            type: 'bar',
+            data: {
+                labels: wrappedLabelsFail,
+                datasets: [
+                    {
+                        label: 'Actual Value',
+                        data: [100, 0, 100, 0], // Approx values from report
+                        backgroundColor: '#4cc9f0'
+                    },
+                    {
+                        label: 'Predicted Value',
+                        data: [99, 1, 100, 100], // Region D Prod B predicts ~100 instead of 0
+                        backgroundColor: '#f72585'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Prediction Error at Day 500', color: '#fff' },
+                    legend: { labels: { color: '#ccc' } },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    y: { grid: { color: '#333' }, ticks: { color: '#ccc' } },
+                    x: { grid: { display: false }, ticks: { color: '#ccc' } }
+                }
+            }
+        });
+
+        // --- 4. SHAP CHARTS ---
+        // Good Prediction (Region A, Prod B)
+        const ctxShapGood = document.getElementById('shapGoodChart').getContext('2d');
+        const rawLabelsGood = ['Product_B (Feature)', 'Day_Num (Feature)', 'Price (Feature)'];
+        const wrappedLabelsGood = rawLabelsGood.map(wrapLabel);
+
+        new Chart(ctxShapGood, {
+            type: 'bar',
+            data: {
+                labels: wrappedLabelsGood,
+                datasets: [{
+                    label: 'Contribution to Prediction',
+                    data: [0.60, 0.04, -0.05], // Values from log
+                    backgroundColor: '#4cc9f0'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    x: { grid: { color: '#333' }, ticks: { color: '#ccc' } },
+                    y: { grid: { display: false }, ticks: { color: '#ccc' } }
+                }
+            }
+        });
+
+        // Bad Prediction (Region D, Prod B)
+        const ctxShapBad = document.getElementById('shapBadChart').getContext('2d');
+        const rawLabelsBad = ['Region_D (Feature)', 'Source_Batch (Feature)', 'Product_B (Feature)'];
+        const wrappedLabelsBad = rawLabelsBad.map(wrapLabel);
+
+        new Chart(ctxShapBad, {
+            type: 'bar',
+            data: {
+                labels: wrappedLabelsBad,
+                datasets: [{
+                    label: 'Contribution to Prediction',
+                    data: [0.95, 0.80, -0.01], // Mocked high values for Region D based on "massive importance" description
+                    backgroundColor: '#f72585'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    x: { grid: { color: '#333' }, ticks: { color: '#ccc' } },
+                    y: { grid: { display: false }, ticks: { color: '#ccc' } }
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

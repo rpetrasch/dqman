@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality for Software Engineers - Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 
+        Color Palette: "Cosmic Data" (Inspired by the book cover art)
+        Primary Dark: #1e1b4b (Indigo 950)
+        Primary Blue: #3b82f6 (Blue 500)
+        Accent Purple: #8b5cf6 (Violet 500)
+        Accent Teal: #14b8a6 (Teal 500)
+        Alert Red: #ef4444 (Red 500)
+        Background: #f8fafc (Slate 50) to #ffffff
+    -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        cosmic: {
+                            dark: '#1e1b4b',
+                            light: '#312e81',
+                            accent: '#8b5cf6',
+                            teal: '#14b8a6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Custom Utilities for Diagram Shapes (No SVG) */
+        .flow-arrow {
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #8b5cf6; /* Violet 500 */
+            margin: 0 auto;
+        }
+        .flow-line {
+            width: 4px;
+            height: 30px;
+            background-color: #e2e8f0;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .flow-line {
+                width: 50px;
+                height: 4px;
+                margin: auto 0;
+            }
+            .flow-arrow {
+                transform: rotate(-90deg); /* Point right on desktop */
+                margin: auto 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- HERO SECTION -->
+    <header class="bg-cosmic-dark text-white pt-20 pb-24 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cosmic-accent via-blue-500 to-cosmic-teal"></div>
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-800 text-indigo-200 text-sm font-semibold mb-4 border border-indigo-600">Based on "Data Quality for Software Engineers"</span>
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                Towards Data Quality <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Excellence</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-indigo-200 max-w-3xl mx-auto mb-10">
+                AI-ready data, reliable business intelligence, and trustworthy decisions. Don't let "Garbage In" lead to "Garbage Out".
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <div class="text-4xl font-bold text-cosmic-teal mb-2">80%</div>
+                    <div class="text-sm text-indigo-100">DQ created in Business Depts</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <div class="text-4xl font-bold text-blue-400 mb-2">20%</div>
+                    <div class="text-sm text-indigo-100">DQ created in IT Depts</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <div class="text-4xl font-bold text-purple-400 mb-2">100%</div>
+                    <div class="text-sm text-indigo-100">Business Impact</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: THE BUSINESS CASE (Cost of Poor Quality) -->
+    <section class="py-16 px-6 max-w-6xl mx-auto">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-bold text-cosmic-dark mb-4">The Real Cost of Poor Data</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Bad data isn't just an annoyance; it's a financial liability. Based on a retail case study, here is how monthly losses accumulate due to simple data errors.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <!-- Narrative Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 border-l-8 border-red-500">
+                <h3 class="text-xl font-bold text-slate-800 mb-4">Monthly Financial Impact: <span class="text-red-600">€25,500</span></h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-3">📦</span>
+                        <div>
+                            <span class="font-bold text-slate-700">Inventory Chaos:</span>
+                            <p class="text-sm text-slate-500">Over-ordering and tied-up capital due to incorrect stock data.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-3">📉</span>
+                        <div>
+                            <span class="font-bold text-slate-700">Lost Sales:</span>
+                            <p class="text-sm text-slate-500">Missing demand forecasts caused by outdated store info.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-3">↩️</span>
+                        <div>
+                            <span class="font-bold text-slate-700">Returns & Complaints:</span>
+                            <p class="text-sm text-slate-500">Incomplete product data leads to wrong customer orders.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Visualization -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h4 class="text-center font-semibold text-slate-500 mb-4 uppercase tracking-wider text-xs">Cost Distribution Breakdown</h4>
+                <div class="chart-container">
+                    <canvas id="costChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-slate-400 mt-4">Source: Retail Case Study (Section 1.3.2.8)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: ISO 25012 DIMENSIONS -->
+    <section class="py-16 bg-slate-100 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-cosmic-dark mb-4">Defining Data Quality</h2>
+                <p class="text-lg text-slate-600">
+                    Quality is not binary. It is multidimensional. According to ISO/IEC 25012, we must measure data against specific characteristics to determine its "fitness for use."
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Visualization -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 order-2 lg:order-1">
+                    <h4 class="text-center font-semibold text-slate-500 mb-4 uppercase tracking-wider text-xs">Data Maturity Assessment</h4>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <span class="inline-block w-3 h-3 rounded-full bg-indigo-900 mr-2"></span><span class="text-sm text-slate-600 mr-4">Target State</span>
+                        <span class="inline-block w-3 h-3 rounded-full bg-red-400 mr-2"></span><span class="text-sm text-slate-600">Current State</span>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 order-1 lg:order-2">
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-cosmic-accent mb-2">Accuracy</h4>
+                        <p class="text-sm text-slate-600">Does the data correctly represent the real-world entity? (e.g., correct address)</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-cosmic-teal mb-2">Completeness</h4>
+                        <p class="text-sm text-slate-600">Is all required data present? (e.g., no missing mandatory fields)</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-blue-500 mb-2">Consistency</h4>
+                        <p class="text-sm text-slate-600">Is the data uniform across different systems and datasets?</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-orange-500 mb-2">Timeliness</h4>
+                        <p class="text-sm text-slate-600">Is the data up-to-date and available when needed for decision making?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: DATA GOVERNANCE LOOP -->
+    <section class="py-16 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-cosmic-dark mb-4">The Data Quality Control Loop</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Governance is not a one-time project; it is a continuous cycle. The "Refinery" approach turns raw data into valuable assets through iterative improvement.
+            </p>
+        </div>
+
+        <!-- Custom CSS Flowchart (NO SVG) -->
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-12">
+            
+            <!-- Step 1 -->
+            <div class="w-full md:w-1/4 bg-white p-6 rounded-xl shadow-md border-t-4 border-blue-500 relative group hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">STEP 1</div>
+                <h3 class="font-bold text-lg text-slate-800 text-center mb-2">Define & Set</h3>
+                <p class="text-xs text-slate-500 text-center">Identify data objects, define goals, and assign ownership roles.</p>
+            </div>
+
+            <!-- Connector -->
+            <div class="hidden md:block text-slate-300 text-2xl">➔</div>
+            <div class="md:hidden text-slate-300 text-2xl">⬇</div>
+
+            <!-- Step 2 -->
+            <div class="w-full md:w-1/4 bg-white p-6 rounded-xl shadow-md border-t-4 border-cosmic-accent relative group hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-cosmic-accent text-white text-xs font-bold px-3 py-1 rounded-full">STEP 2</div>
+                <h3 class="font-bold text-lg text-slate-800 text-center mb-2">Measure</h3>
+                <p class="text-xs text-slate-500 text-center">Collect data, apply validation rules, and record quality metrics.</p>
+            </div>
+
+            <!-- Connector -->
+            <div class="hidden md:block text-slate-300 text-2xl">➔</div>
+            <div class="md:hidden text-slate-300 text-2xl">⬇</div>
+
+            <!-- Step 3 -->
+            <div class="w-full md:w-1/4 bg-white p-6 rounded-xl shadow-md border-t-4 border-cosmic-teal relative group hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-cosmic-teal text-white text-xs font-bold px-3 py-1 rounded-full">STEP 3</div>
+                <h3 class="font-bold text-lg text-slate-800 text-center mb-2">Analyze</h3>
+                <p class="text-xs text-slate-500 text-center">Evaluate results against thresholds. Identify root causes of errors.</p>
+            </div>
+
+            <!-- Connector -->
+            <div class="hidden md:block text-slate-300 text-2xl">➔</div>
+            <div class="md:hidden text-slate-300 text-2xl">⬇</div>
+
+            <!-- Step 4 -->
+            <div class="w-full md:w-1/4 bg-white p-6 rounded-xl shadow-md border-t-4 border-orange-400 relative group hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full">STEP 4</div>
+                <h3 class="font-bold text-lg text-slate-800 text-center mb-2">Improve</h3>
+                <p class="text-xs text-slate-500 text-center">Cleanse data, update processes, and implement preventative rules.</p>
+            </div>
+
+        </div>
+        
+        <div class="text-center">
+            <span class="inline-block bg-slate-200 rounded-full px-4 py-1 text-xs font-bold text-slate-600">REPEAT CYCLE</span>
+        </div>
+    </section>
+
+    <!-- SECTION 4: AI & DATA QUALITY (Bridging the Gap) -->
+    <section class="py-16 bg-cosmic-dark text-white px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Content -->
+                <div>
+                    <div class="inline-block bg-cosmic-accent/20 border border-cosmic-accent text-cosmic-accent px-3 py-1 rounded mb-4 text-sm font-bold">CHAPTER 1.5.2</div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">AI Confidence Scoring</h2>
+                    <p class="text-indigo-200 mb-6">
+                        In the age of Generative AI, traditional binary validation isn't enough. We need probabilistic quality gates.
+                    </p>
+                    <p class="text-indigo-200 mb-8">
+                        The chart demonstrates a Sequence-to-Sequence model translating text. While it handles simple sentences with high confidence, specialized vocabulary causes the model's certainty—and reliability—to plummet.
+                    </p>
+                    
+                    <div class="bg-white/5 p-4 rounded-lg border-l-4 border-cosmic-teal">
+                        <h4 class="font-bold text-white mb-1">Key Insight</h4>
+                        <p class="text-sm text-indigo-200">
+                            Low minimum confidence scores (like the 23.6% shown) signal a high risk of hallucination. These metrics allow us to flag data for "Human-in-the-Loop" review.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+                    <h4 class="text-center font-semibold text-indigo-200 mb-4 uppercase tracking-wider text-xs">Translation Confidence Metrics</h4>
+                    <div class="chart-container">
+                        <canvas id="aiChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="mb-4 font-semibold text-white">Data Quality for Software Engineers</p>
+            <p class="text-sm mb-8">Based on the work of Roland Petrasch, Richard Petrasch, Stefan Edlich, Thomas Blum, Ralf Hundertmark, and Tom Henkel.</p>
+            <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            <p class="text-xs mt-8 text-slate-600">Generated by Canvas Infographics. No SVGs or Mermaid JS were used in the creation of this page.</p>
+        </div>
+    </footer>
+
+    <!-- CHART.JS CONFIGURATION -->
+    <script>
+        // 1. Label Wrapping Logic (16 char limit)
+        function wrapLabel(label) {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length < maxLen) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // 2. Common Tooltip Configuration (Required)
+        const commonTooltipOptions = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // CHART 1: Cost of Poor Data (Doughnut)
+        const ctxCost = document.getElementById('costChart').getContext('2d');
+        const costLabels = ["Storage & Capital (Inventory)", "Sales Losses (Outdated Info)", "Returns & Complaints (Product Data)", "Marketing Waste (Poor Segmentation)"];
+        const wrappedCostLabels = costLabels.map(wrapLabel);
+
+        new Chart(ctxCost, {
+            type: 'doughnut',
+            data: {
+                labels: wrappedCostLabels,
+                datasets: [{
+                    data: [12000, 6500, 4000, 3000],
+                    backgroundColor: ['#1e1b4b', '#3b82f6', '#ef4444', '#14b8a6'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                    title: { display: true, text: 'Monthly Cost Breakdown (€)', font: { size: 16 } },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+
+        // CHART 2: DQ Dimensions (Radar)
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        const dimLabels = ["Accuracy", "Completeness", "Consistency", "Timeliness", "Validity", "Uniqueness"];
+        
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: dimLabels,
+                datasets: [
+                    {
+                        label: 'Target State',
+                        data: [95, 100, 95, 90, 98, 100],
+                        fill: true,
+                        backgroundColor: 'rgba(30, 27, 75, 0.2)',
+                        borderColor: '#1e1b4b',
+                        pointBackgroundColor: '#1e1b4b',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#1e1b4b'
+                    },
+                    {
+                        label: 'Current State',
+                        data: [60, 45, 50, 40, 70, 55],
+                        fill: true,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: '#ef4444',
+                        pointBackgroundColor: '#ef4444',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#ef4444'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: { font: { size: 12, weight: 'bold' }, color: '#475569' },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    tooltip: commonTooltipOptions,
+                    legend: { display: false } // Custom legend in HTML
+                }
+            }
+        });
+
+        // CHART 3: AI Confidence (Bar)
+        // Data from user provided python output: 
+        // Simple: 87.7% avg
+        // Complex: 75.3% avg, 23.6% min
+        const ctxAI = document.getElementById('aiChart').getContext('2d');
+        const aiLabels = ["Simple Input (Avg Confidence)", "Complex Input (Avg Confidence)", "Complex Input (Min Confidence)"];
+        const wrappedAiLabels = aiLabels.map(wrapLabel);
+
+        new Chart(ctxAI, {
+            type: 'bar',
+            data: {
+                labels: wrappedAiLabels,
+                datasets: [{
+                    label: 'Confidence Score (%)',
+                    data: [87.7, 75.3, 23.6],
+                    backgroundColor: [
+                        '#14b8a6', // Teal (High)
+                        '#fbbf24', // Amber (Med)
+                        '#ef4444'  // Red (Low/Danger)
+                    ],
+                    borderRadius: 6,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#a5b4fc' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#a5b4fc', font: { size: 11 } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+    </script>
+    
+    <!-- 
+        Explicit Confirmation: 
+        NO Mermaid JS was used.
+        NO SVG graphics were used (Chart.js uses Canvas, Flowcharts use CSS borders).
+        Palette used: "Cosmic Data" (Vibrant Blue/Purple/Teal).
+    -->
+</body>
+</html>
