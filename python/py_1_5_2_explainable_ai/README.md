@@ -23,7 +23,7 @@ Before running the script, ensure you have the following installed:
 
 ## **Installation**
 
-1. **Set up your Virtual Environment** (if not already active):  
+1. **Set up your Virtual Environment** (if not already  active):  
    \# Create the venv  
    ```python -m venv .venv```
 
@@ -41,7 +41,7 @@ Before running the script, ensure you have the following installed:
 
 3. Download the LLM:  
    This step is critical. The Python script does not auto-download the model.  
-   ````ollama pull llama3```
+   ```ollama pull llama3```
 
 ## **Usage**
 
