@@ -1,10 +1,9 @@
-package org.dqman.java.streamspredicates;
+package org.dqman.streamspredicates;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static org.dqman.java.streamspredicates.FindDuplicates.findDuplicateCustomerQuotesBucketingParallelStream;
-import static org.dqman.java.streamspredicates.FindDuplicates.findDuplicateCustomerQuotesBucketingStream;
+import static org.dqman.streamspredicates.FindDuplicates.findDuplicateCustomerQuotesBucketingParallelStream;
+import static org.dqman.streamspredicates.FindDuplicates.findDuplicateCustomerQuotesBucketingStream;
 
 /**
  * Main class for running the data quality checks with both sequential and parallel streams.
