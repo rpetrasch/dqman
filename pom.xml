@@ -67,6 +67,7 @@
         <module>4.4.1_java_predicates_and_streams</module>
         <module>4.4.3_apache_nifi</module>
         <module>2.1.1_precision_problem</module>
+        <module>_4_6_dq_tool</module>
     </modules>
 <!-- Test -->
     <build>
