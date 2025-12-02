@@ -1,0 +1,30 @@
+.dq-rules-container {
+    padding: 20px;
+}
+
+.create-rule-form,
+.edit-rule-form {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.create-rule-form h3,
+.edit-rule-form h3 {
+    margin-top: 0;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button {
+    margin-right: 10px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}

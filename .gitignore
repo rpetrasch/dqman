@@ -50,3 +50,13 @@ replay_pid*
 # add your virtual environment if you follow these new standards of having hem in the repo folder.
 
 .venv/
+
+
+# NodeJA directories
+node_modules/
+jspm_packages/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
