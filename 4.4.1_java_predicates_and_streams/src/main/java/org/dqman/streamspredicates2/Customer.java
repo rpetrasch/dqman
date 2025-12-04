@@ -1,4 +1,4 @@
-package org.dqman.streamspredicates;
+package org.dqman.streamspredicates2;
 
 import java.math.BigDecimal;
 
@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * @param name
  * @param maxCreditLine
  */
-record Customer(long id, String name, BigDecimal maxCreditLine) {
+public record Customer(long id, String name, BigDecimal maxCreditLine) {
     public static final int MAX_CREDIT_LINE_INT = 10000;
     public static final BigDecimal MAX_CREDIT_LINE = BigDecimal.valueOf(MAX_CREDIT_LINE_INT);
 }

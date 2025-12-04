@@ -1,4 +1,4 @@
-package org.dqman.streamspredicates;
+package org.dqman.streamspredicates2;
 
 import java.util.HashMap;
 import java.util.HashSet;

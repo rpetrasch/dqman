@@ -1,4 +1,4 @@
-package org.dqman.streamspredicates;
+package org.dqman.streamspredicates2;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
