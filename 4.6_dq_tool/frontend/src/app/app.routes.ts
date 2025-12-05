@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { ProjectsComponent } from './projects/projects';
 import { IntegrationComponent } from './integration/integration';
 import { AlertsComponent } from './alerts/alerts';
 import { ReportsComponent } from './reports/reports';
-import { KestraComponent } from './kestra/kestra';
+import { FlowComponent } from './flow/flow';
 import { DqRulesComponent } from './dq-rules/dq-rules';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard';
 
@@ -16,12 +15,15 @@ export const routes: Routes = [
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: HomeDashboardComponent },
-            { path: 'projects', component: DashboardComponent },
+            { path: 'projects', component: ProjectsComponent },
             { path: 'rules', component: DqRulesComponent },
             { path: 'integration', component: IntegrationComponent },
+            { path: 'flow', component: FlowComponent },
             { path: 'alerts', component: AlertsComponent },
             { path: 'reports', component: ReportsComponent },
-            { path: 'kestra', component: KestraComponent }
+            // { path: 'settings', component: SettingsComponent },
+            // { path: 'users', component: UsersComponent },
+            // { path: 'roles', component: RolesComponent },
         ]
     }
 ];

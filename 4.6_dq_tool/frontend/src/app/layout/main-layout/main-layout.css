@@ -28,7 +28,7 @@
 }
 
 .logo-text {
-    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    background: linear-gradient(225deg, lightgreen, green);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -36,5 +36,5 @@
 }
 
 .tool-text {
-    color: white;
+    color: greenyellow;
 }

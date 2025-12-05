@@ -1,21 +1,23 @@
+
 import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
-import { DqIntegration } from '../dq-integration.model';
-import { DqIntegrationService } from '../dq-integration.service';
+import { DqFlow } from '../dq-flow.model';
+import { DqFlowService } from '../dq-flow.service';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { IntegrationDialogComponent } from './integration-dialog.component';
+import { FlowDialogComponent } from './flow-dialog.component';
+import { FlowGraphDialogComponent } from './flow-graph-dialog.component';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-integration',
+  selector: 'app-flow',
   standalone: true,
   imports: [
     MatTableModule,
@@ -24,17 +26,17 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
-    CommonModule,
+    MatIconModule,
     MatDialogModule,
-    MatIconModule
+    FormsModule,
+    CommonModule
   ],
-  templateUrl: './integration.html',
-  styleUrl: './integration.css'
+  templateUrl: './flow.html',
+  styleUrl: './flow.css'
 })
-export class IntegrationComponent implements OnInit, AfterViewInit {
-  dataSource = new MatTableDataSource<DqIntegration>([]);
-  displayedColumns: string[] = ['id', 'name', 'description', 'type', 'url', 'user', 'password', 'actions'];
+export class FlowComponent implements OnInit, AfterViewInit {
+  dataSource = new MatTableDataSource<DqFlow>([]);
+  displayedColumns: string[] = ['id', 'name', 'description', 'status', 'createdDate', 'modifiedDate', 'actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -44,36 +46,33 @@ export class IntegrationComponent implements OnInit, AfterViewInit {
     id: '',
     name: '',
     description: '',
-    type: '',
-    url: '',
-    user: '',
-    password: ''
+    status: ''
   };
 
   constructor(
-    private dqIntegrationService: DqIntegrationService,
+    private dqFlowService: DqFlowService,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.dataSource.filterPredicate = this.createFilter();
-    this.loadIntegrations();
+    this.loadFlows();
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
 
-  loadIntegrations(): void {
-    this.dqIntegrationService.getAllIntegrations().subscribe((data: DqIntegration[]) => {
+  loadFlows(): void {
+    this.dqFlowService.getAllFlows().subscribe((data: DqFlow[]) => {
       this.dataSource.data = data;
       this.cdr.detectChanges();
     });
   }
 
-  createFilter(): (data: DqIntegration, filter: string) => boolean {
-    return (data: DqIntegration, filter: string): boolean => {
+  createFilter(): (data: DqFlow, filter: string) => boolean {
+    return (data: DqFlow, filter: string): boolean => {
       const searchTerms = JSON.parse(filter);
 
       // Global Filter
@@ -81,19 +80,15 @@ export class IntegrationComponent implements OnInit, AfterViewInit {
         (data.id?.toString().toLowerCase().includes(searchTerms.global) ||
           data.name.toLowerCase().includes(searchTerms.global) ||
           data.description?.toLowerCase().includes(searchTerms.global) ||
-          data.type?.toLowerCase().includes(searchTerms.global) ||
-          data.url?.toLowerCase().includes(searchTerms.global) ||
-          data.user?.toLowerCase().includes(searchTerms.global));
+          data.status.toLowerCase().includes(searchTerms.global));
 
       // Column Filters
       const idMatch = !searchTerms.id || data.id?.toString().toLowerCase().includes(searchTerms.id);
       const nameMatch = !searchTerms.name || data.name.toLowerCase().includes(searchTerms.name);
       const descMatch = !searchTerms.description || data.description?.toLowerCase().includes(searchTerms.description);
-      const typeMatch = !searchTerms.type || data.type?.toLowerCase().includes(searchTerms.type);
-      const urlMatch = !searchTerms.url || data.url?.toLowerCase().includes(searchTerms.url);
-      const userMatch = !searchTerms.user || data.user?.toLowerCase().includes(searchTerms.user);
+      const statusMatch = !searchTerms.status || data.status.toLowerCase().includes(searchTerms.status);
 
-      var result = globalMatch && idMatch && nameMatch && descMatch && typeMatch && urlMatch && userMatch;
+      var result = globalMatch && idMatch && nameMatch && descMatch && statusMatch;
       if (result === undefined) {
         result = true;
       }
@@ -121,51 +116,60 @@ export class IntegrationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openIntegrationDialog(integration?: DqIntegration): void {
-    const dialogRef = this.dialog.open(IntegrationDialogComponent, {
+  openFlowDialog(flow?: DqFlow): void {
+    const dialogRef = this.dialog.open(FlowDialogComponent, {
       width: '800px',
-      data: integration || null
+      data: flow || null
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (integration && integration.id) {
-          this.updateIntegration(integration.id, result);
+        if (flow && flow.id) {
+          this.updateFlow(flow.id, result);
         } else {
-          this.createIntegration(result);
+          this.createFlow(result);
         }
       }
     });
   }
 
-  createIntegration(integration: DqIntegration): void {
-    this.dqIntegrationService.createIntegration(integration).subscribe({
+  createFlow(flow: DqFlow): void {
+    this.dqFlowService.createFlow(flow).subscribe({
       next: () => {
-        this.loadIntegrations();
+        this.loadFlows();
       },
       error: (err) => {
-        console.error('Error creating integration:', err);
+        console.error('Error creating flow:', err);
       }
     });
   }
 
-  updateIntegration(id: number, integration: DqIntegration): void {
-    this.dqIntegrationService.updateIntegration(id, integration).subscribe(() => {
-      this.loadIntegrations();
+  updateFlow(id: number, flow: DqFlow): void {
+    this.dqFlowService.updateFlow(id, flow).subscribe(() => {
+      this.loadFlows();
     });
   }
 
-  deleteIntegration(id: number | undefined): void {
+  openGraphDialog(flow: DqFlow): void {
+    this.dialog.open(FlowGraphDialogComponent, {
+      width: '95%',
+      height: '90%',
+      maxWidth: '100vw',
+      data: flow
+    });
+  }
+
+  deleteFlow(id: number | undefined): void {
     if (id) {
       const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '350px',
-        data: { title: 'Delete Integration', message: 'Are you sure you want to delete this integration?' }
+        data: { title: 'Delete Flow', message: 'Are you sure you want to delete this flow?' }
       });
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.dqIntegrationService.deleteIntegration(id).subscribe(() => {
-            this.loadIntegrations();
+          this.dqFlowService.deleteFlow(id).subscribe(() => {
+            this.loadFlows();
           });
         }
       });

@@ -1,3 +1,6 @@
+
+export const RuleTypeOptions = ['SQL', 'REGEX', 'AI (LLM)', 'ML', 'ADVANCED'];
+
 export interface DqRule {
     id?: number;
     name: string;

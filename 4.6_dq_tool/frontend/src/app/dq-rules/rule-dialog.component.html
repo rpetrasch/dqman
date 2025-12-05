@@ -1,0 +1,63 @@
+<h2 mat-dialog-title><mat-icon matListItemIcon>gavel</mat-icon> {{ isEditMode ? 'Edit Rule' : 'Create New Rule' }}</h2>
+<mat-dialog-content>
+    <div style="display: flex; flex-direction: column;">
+        <!-- Row 1: ID and Name -->
+        <div class="form-row">
+            <mat-form-field class="quarter-width">
+                <mat-label>ID</mat-label>
+                <input matInput [value]="rule.id" disabled />
+            </mat-form-field>
+            <mat-form-field class="three-quarter-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="rule.name" required />
+            </mat-form-field>
+        </div>
+
+        <!-- Row 2: Description -->
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="rule.description" />
+        </mat-form-field>
+
+        <!-- Row 3: Rule Type and Rule Value -->
+        <div class="form-row">
+            <mat-form-field class="half-width">
+                <mat-label>Rule Tyoe</mat-label>
+                <mat-select [ngModel]="rule.ruleType" (selectionChange)="onRuleTypeChange($event.value)">
+                    <mat-option *ngFor="let type of ruleTypeOptions" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Row 4: Rule Value -->
+        <div class="form-row">
+            <mat-form-field class="full-width">
+                <mat-label>Rule Value</mat-label>
+                <textarea matInput [(ngModel)]="rule.ruleValue"></textarea>
+            </mat-form-field>
+        </div>
+
+        <!-- Row 5: Target Table and Target Column -->
+        <div class="form-row">
+            <mat-form-field class="half-width">
+                <mat-label>Target Table</mat-label>
+                <input matInput [(ngModel)]="rule.targetTable" />
+            </mat-form-field>
+
+            <mat-form-field class="half-width">
+                <mat-label>Target Column</mat-label>
+                <input matInput [(ngModel)]="rule.targetColumn" />
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!rule.name">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+</mat-dialog-actions>

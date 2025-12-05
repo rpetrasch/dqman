@@ -37,6 +37,9 @@ public class DqProjectController {
             project.setName(projectDetails.getName());
             project.setDescription(projectDetails.getDescription());
             project.setStatus(projectDetails.getStatus());
+            project.setCreatedDate(projectDetails.getCreatedDate());
+            project.setStartedDate(projectDetails.getStartedDate());
+            project.setFinishedDate(projectDetails.getFinishedDate());
             return dqProjectRepository.save(project);
         }
         return null;

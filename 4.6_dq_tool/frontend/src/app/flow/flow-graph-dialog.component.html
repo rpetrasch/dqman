@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>
+    <mat-icon matListItemIcon>schema</mat-icon> Flow Graph: {{ flow.name }}
+</h2>
+<mat-dialog-content class="graph-content">
+    <div id="drawflow" #drawflow class="drawflow-container"></div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onClose()">
+        <mat-icon>close</mat-icon> Close
+    </button>
+</mat-dialog-actions>

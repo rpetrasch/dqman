@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { DqProject } from '../dq-project.model';
 import { DqProjectService } from '../dq-project';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { MatCardHeader } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
@@ -13,13 +15,14 @@ Chart.register(ArcElement, Tooltip, Legend, PieController, BarController, BarEle
 
 @Component({
   selector: 'app-home-dashboard',
-  imports: [MatTableModule, MatCardModule, CommonModule, BaseChartDirective],
+  imports: [MatTableModule, MatCardModule, MatIconModule, CommonModule, BaseChartDirective],
   templateUrl: './home-dashboard.html',
   styleUrl: './home-dashboard.css'
 })
 export class HomeDashboardComponent implements OnInit {
+  @ViewChildren(BaseChartDirective) charts?: QueryList<BaseChartDirective>;
   projects: DqProject[] = [];
-  displayedColumns: string[] = ['name', 'createdDate', 'status'];
+  displayedColumns: string[] = ['name', 'startedDate', 'finishedDate', 'status'];
 
   // Pie chart data
   public pieChartData: ChartData<'pie'> = {
@@ -32,6 +35,7 @@ export class HomeDashboardComponent implements OnInit {
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom'
@@ -62,6 +66,7 @@ export class HomeDashboardComponent implements OnInit {
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom'
@@ -95,6 +100,7 @@ export class HomeDashboardComponent implements OnInit {
       this.projects = data;
       this.updateChartData();
       this.updateBarChartData();
+      this.charts?.forEach(c => c.update());
       this.cdr.detectChanges();
     });
   }
@@ -102,7 +108,7 @@ export class HomeDashboardComponent implements OnInit {
   updateChartData(): void {
     const successCount = this.projects.filter(p => p.status === 'SUCCESS').length;
     const failedCount = this.projects.filter(p => p.status === 'FAILED').length;
-    const inProgressCount = this.projects.filter(p => p.status === 'IN_PROGRESS').length;
+    const inProgressCount = this.projects.filter(p => p.status === 'STARTED').length;
 
     this.pieChartData = {
       labels: ['Successful', 'Failed', 'In Progress'],
@@ -127,8 +133,8 @@ export class HomeDashboardComponent implements OnInit {
 
       // Count SUCCESS and FAILED projects for this day
       const dayProjects = this.projects.filter(p => {
-        if (!p.createdDate) return false;
-        const projectDate = new Date(p.createdDate).toISOString().split('T')[0];
+        if (!p.finishedDate) return false;
+        const projectDate = new Date(p.finishedDate).toISOString().split('T')[0];
         return projectDate === dateStr;
       });
 
