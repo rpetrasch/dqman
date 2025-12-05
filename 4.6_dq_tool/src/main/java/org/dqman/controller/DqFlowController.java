@@ -7,6 +7,7 @@ import org.dqman.model.DqRule;
 import org.dqman.repository.DqFlowRepository;
 import org.dqman.repository.DqIntegrationRepository;
 import org.dqman.repository.DqRuleRepository;
+import org.dqman.service.FlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/flows")
 @CrossOrigin(origins = "http://localhost:4200")
 public class DqFlowController {
+
+    @Autowired
+    private FlowService flowService;
 
     @Autowired
     private DqFlowRepository dqFlowRepository;
@@ -137,6 +141,24 @@ public class DqFlowController {
                     return ResponseEntity.ok(savedFlow);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/execute")
+    public ResponseEntity<Map<String, Object>> executeFlow(@PathVariable Long id) {
+        try {
+            Map<String, Object> result = flowService.executeFlow(id);
+
+            List<Map<String, Object>> stepResults = (List<Map<String, Object>>) result.get("steps");
+            result.put("endTime", ZonedDateTime.now().toString());
+            result.put("totalSteps", stepResults.size());
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> errorResult = new HashMap<>();
+            errorResult.put("status", "ERROR");
+            errorResult.put("message", "Flow execution failed: " + e.getMessage());
+            return ResponseEntity.status(500).body(errorResult);
+        }
     }
 
     @DeleteMapping("/{id}")

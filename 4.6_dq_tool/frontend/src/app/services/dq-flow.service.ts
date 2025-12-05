@@ -39,6 +39,11 @@ export class DqFlowService {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
 
+    executeFlow(id: number): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/${id}/execute`, {});
+    }
+
+
     getFlowGraphNodes(flow: DqFlow): DrawflowNodeConfig[] {
         const nodes: DrawflowNodeConfig[] = [];
         let x = 50;

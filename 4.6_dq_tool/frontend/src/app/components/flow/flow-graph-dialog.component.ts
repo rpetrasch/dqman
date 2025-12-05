@@ -189,15 +189,56 @@ export class FlowGraphDialogComponent implements AfterViewInit {
     }
 
     onExecute(): void {
+        if (!this.flow.id) {
+            this.executionError = 'Flow must be saved before execution';
+            return;
+        }
+
         this.isExecuting = true;
         this.executionResult = null;
         this.executionError = null;
 
-        // Simulate execution (replace with actual API call)
-        setTimeout(() => {
-            this.isExecuting = false;
-            this.executionResult = `Flow "${this.flow.name}" executed successfully!\n\nSteps executed: ${this.flow.steps?.length || 0}\nStatus: Completed\nTimestamp: ${new Date().toISOString()}`;
-        }, 2000);
+        this.dqFlowService.executeFlow(this.flow.id).subscribe({
+            next: (result) => {
+                this.ngZone.run(() => {
+                    this.isExecuting = false;
+
+                    // Format the result for display
+                    let output = `Flow "${result.flowName}" Execution Results\n`;
+                    output += `${'='.repeat(50)}\n\n`;
+                    output += `Status: ${result.status}\n`;
+                    output += `Start Time: ${new Date(result.startTime).toLocaleString()}\n`;
+                    output += `End Time: ${new Date(result.endTime).toLocaleString()}\n`;
+                    output += `Total Steps: ${result.totalSteps}\n\n`;
+
+                    if (result.steps && result.steps.length > 0) {
+                        output += `Step Details:\n`;
+                        output += `${'-'.repeat(50)}\n`;
+                        result.steps.forEach((step: any, index: number) => {
+                            output += `\n${index + 1}. ${step.stepName} (${step.stepType})\n`;
+                            output += `   Status: ${step.status}\n`;
+                            output += `   Message: ${step.message}\n`;
+                            if (step.integrationName) {
+                                output += `   Integration: ${step.integrationName}\n`;
+                            }
+                            if (step.ruleName) {
+                                output += `   Rule: ${step.ruleName}\n`;
+                            }
+                        });
+                    }
+
+                    this.executionResult = output;
+                    this.cdr.detectChanges();
+                });
+            },
+            error: (error) => {
+                this.ngZone.run(() => {
+                    this.isExecuting = false;
+                    this.executionError = `Execution failed: ${error.error?.message || error.message || 'Unknown error'}`;
+                    this.cdr.detectChanges();
+                });
+            }
+        });
     }
 
     onClose(): void {
