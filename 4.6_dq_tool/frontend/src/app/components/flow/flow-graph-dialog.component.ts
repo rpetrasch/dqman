@@ -7,7 +7,9 @@ import { CommonModule } from '@angular/common';
 import { DqFlow, DqFlowStep } from '../../models/dq-flow.model';
 import { DqFlowService, DrawflowNodeConfig } from '../../services/dq-flow.service';
 import { FlowStepDialogComponent } from './flow-step-dialog.component';
+import { formatDateTime } from '../../utils/date-utils';
 import Drawflow from 'drawflow';
+
 
 @Component({
     selector: 'app-flow-graph-dialog',
@@ -205,15 +207,15 @@ export class FlowGraphDialogComponent implements AfterViewInit {
 
                     // Format the result for display
                     let output = `Flow "${result.flowName}" Execution Results\n`;
-                    output += `${'='.repeat(50)}\n\n`;
+                    output += `${'='.repeat(30)}\n\n`;
                     output += `Status: ${result.status}\n`;
-                    output += `Start Time: ${new Date(result.startTime).toLocaleString()}\n`;
-                    output += `End Time: ${new Date(result.endTime).toLocaleString()}\n`;
+                    output += `Start Time: ${formatDateTime(result.startTime)}\n`;
+                    output += `End Time: ${formatDateTime(result.endTime)}\n`;
                     output += `Total Steps: ${result.totalSteps}\n\n`;
 
                     if (result.steps && result.steps.length > 0) {
                         output += `Step Details:\n`;
-                        output += `${'-'.repeat(50)}\n`;
+                        output += `${'-'.repeat(30)}\n`;
                         result.steps.forEach((step: any, index: number) => {
                             output += `\n${index + 1}. ${step.stepName} (${step.stepType})\n`;
                             output += `   Status: ${step.status}\n`;

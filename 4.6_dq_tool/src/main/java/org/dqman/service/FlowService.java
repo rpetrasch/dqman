@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.dqman.model.DqFlow;
 import org.dqman.model.DqFlowStep;
+import org.dqman.model.DqIntegration;
 import org.dqman.repository.DqFlowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class FlowService {
 
     @Autowired
     private DqFlowRepository dqFlowRepository;
+
+    @Autowired
+    private IntegrationService integrationService;
 
     public Map<String, Object> executeFlow(Long flowId) {
 
@@ -32,6 +36,7 @@ public class FlowService {
         result.put("status", "SUCCESS");
         result.put("startTime", ZonedDateTime.now().toString());
 
+        Map<String, List<List<String>>> data = new HashMap<>();
         List<Map<String, Object>> stepResults = new ArrayList<>();
 
         if (flow.getSteps() != null && !flow.getSteps().isEmpty()) {
@@ -46,6 +51,13 @@ public class FlowService {
                     // Execute step based on type
                     if ("DATA SOURCE".equals(step.getType()) || "DATA SINK".equals(step.getType())) {
                         if (step.getIntegration() != null) {
+                            if ("DATA SOURCE".equals(step.getType())) {
+                                DqIntegration integration = step.getIntegration();
+                                List<String> metadata = integrationService.getMetadata(integration);
+                                data = integrationService.getData(integration, metadata);
+                            } else if ("DATA SINK".equals(step.getType())) {
+                                // ToDo
+                            }
                             stepResult.put("integrationId", step.getIntegration().getId());
                             stepResult.put("integrationName", step.getIntegration().getName());
                             stepResult.put("status", "COMPLETED");
