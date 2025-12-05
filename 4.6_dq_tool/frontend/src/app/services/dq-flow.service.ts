@@ -60,7 +60,7 @@ export class DqFlowService {
                 posX: x,
                 posY: y,
                 className: this.getClassNameForType(step.type),
-                data: { ...step },
+                data: { ...step, stepIndex: index }, // Add stepIndex to data
                 html: `
                   <div class="flow-step-node">
                     <div class="step-title">${step.name}</div>
