@@ -5,12 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class DqRule extends FlowComponent {
     private String ruleType; // e.g., SQL, REGEX
     private String ruleValue; // The actual SQL or Regex
+    private String dataSource;
+    private String dataField;
     private String targetTable;
     private String targetColumn;
 }

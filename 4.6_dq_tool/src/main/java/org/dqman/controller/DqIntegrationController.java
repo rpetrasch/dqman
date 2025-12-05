@@ -2,11 +2,13 @@ package org.dqman.controller;
 
 import org.dqman.model.DqIntegration;
 import org.dqman.repository.DqIntegrationRepository;
+import org.dqman.service.IntegrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/integrations")
@@ -15,6 +17,8 @@ public class DqIntegrationController {
 
     @Autowired
     private DqIntegrationRepository dqIntegrationRepository;
+    @Autowired
+    private IntegrationService integrationService;
 
     @GetMapping
     public List<DqIntegration> getAllIntegrations() {
@@ -56,5 +60,25 @@ public class DqIntegrationController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/metadata/{id}")
+    public ResponseEntity<List<String>> getIntegrationMetadata(@PathVariable Long id) {
+        DqIntegration integration = dqIntegrationRepository.findById(id).orElse(null);
+        if (integration == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<String> metadata = integrationService.getMetadata(integration);
+        return ResponseEntity.ok(metadata);
+    }
+
+    @GetMapping("/data/{id}")
+    public ResponseEntity<Map<String, List<List<String>>>> getIntegrationData(@PathVariable Long id) {
+        DqIntegration integration = dqIntegrationRepository.findById(id).orElse(null);
+        if (integration == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Map<String, List<List<String>>> data = integrationService.getData(integration);
+        return ResponseEntity.ok(data);
     }
 }

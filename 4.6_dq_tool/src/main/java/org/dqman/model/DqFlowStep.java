@@ -8,9 +8,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class DqFlowStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

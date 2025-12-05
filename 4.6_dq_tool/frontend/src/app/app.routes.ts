@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { MainLayoutComponent } from './layout/main-layout/main-layout';
-import { ProjectsComponent } from './projects/projects';
-import { IntegrationComponent } from './integration/integration';
-import { AlertsComponent } from './alerts/alerts';
-import { ReportsComponent } from './reports/reports';
-import { FlowComponent } from './flow/flow';
-import { DqRulesComponent } from './dq-rules/dq-rules';
-import { HomeDashboardComponent } from './home-dashboard/home-dashboard';
+import { MainLayoutComponent } from './components/layout/main-layout/main-layout';
+import { ProjectsComponent } from './components/projects/projects';
+import { IntegrationComponent } from './components/integration/integration';
+import { AlertsComponent } from './components/alerts/alerts';
+import { ReportsComponent } from './components/reports/reports';
+import { FlowComponent } from './components/flow/flow';
+import { DqRulesComponent } from './components/dq-rules/dq-rules';
+import { HomeDashboardComponent } from './components/home-dashboard/home-dashboard';
 
 export const routes: Routes = [
     {

@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class DqFlow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
