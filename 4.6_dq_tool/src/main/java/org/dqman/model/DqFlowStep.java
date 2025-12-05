@@ -25,4 +25,14 @@ public class DqFlowStep {
     @JoinColumn(name = "flow_id")
     @JsonBackReference
     private DqFlow flow;
+
+    // Reference to integration (for DATA SOURCE or DATA SINK steps)
+    @ManyToOne
+    @JoinColumn(name = "integration_id")
+    private DqIntegration integration;
+
+    // Reference to DQ rule (for DQ RULE steps)
+    @ManyToOne
+    @JoinColumn(name = "rule_id")
+    private DqRule rule;
 }

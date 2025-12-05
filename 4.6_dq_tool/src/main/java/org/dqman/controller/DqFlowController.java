@@ -2,10 +2,17 @@ package org.dqman.controller;
 
 import org.dqman.model.DqFlow;
 import org.dqman.model.DqFlowStep;
+import org.dqman.model.DqIntegration;
+import org.dqman.model.DqRule;
 import org.dqman.repository.DqFlowRepository;
+import org.dqman.repository.DqIntegrationRepository;
+import org.dqman.repository.DqRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -19,22 +26,55 @@ public class DqFlowController {
     @Autowired
     private DqFlowRepository dqFlowRepository;
 
+    @Autowired
+    private DqIntegrationRepository dqIntegrationRepository;
+
+    @Autowired
+    private DqRuleRepository dqRuleRepository;
+
     @GetMapping
     public List<DqFlow> getAllFlows() {
         return dqFlowRepository.findAll();
     }
 
     @PostMapping
-    public DqFlow createFlow(@RequestBody DqFlow flow) {
+    public DqFlow createFlow(@RequestBody JsonNode flowJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+        mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        DqFlow flow = mapper.convertValue(flowJson, DqFlow.class);
+
         if (flow.getCreatedDate() == null) {
             flow.setCreatedDate(ZonedDateTime.now());
         }
         flow.setModifiedDate(ZonedDateTime.now());
 
-        // Ensure steps carry the reference to this flow
+        // Ensure steps carry the reference to this flow and resolve integration/rule
+        // references
         if (flow.getSteps() != null) {
-            for (DqFlowStep step : flow.getSteps()) {
+            JsonNode stepsNode = flowJson.get("steps");
+            for (int i = 0; i < flow.getSteps().size(); i++) {
+                DqFlowStep step = flow.getSteps().get(i);
                 step.setFlow(flow);
+
+                // Handle integrationId
+                if (stepsNode != null && stepsNode.has(i)) {
+                    JsonNode stepNode = stepsNode.get(i);
+                    if (stepNode.has("integrationId") && !stepNode.get("integrationId").isNull()) {
+                        Long integrationId = stepNode.get("integrationId").asLong();
+                        DqIntegration integration = dqIntegrationRepository.findById(integrationId).orElse(null);
+                        step.setIntegration(integration);
+                    }
+
+                    // Handle ruleId
+                    if (stepNode.has("ruleId") && !stepNode.get("ruleId").isNull()) {
+                        Long ruleId = stepNode.get("ruleId").asLong();
+                        DqRule rule = dqRuleRepository.findById(ruleId).orElse(null);
+                        step.setRule(rule);
+                    }
+                }
             }
         }
 
@@ -49,7 +89,14 @@ public class DqFlowController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DqFlow> updateFlow(@PathVariable Long id, @RequestBody DqFlow flowDetails) {
+    public ResponseEntity<DqFlow> updateFlow(@PathVariable Long id, @RequestBody JsonNode flowJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+        mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        DqFlow flowDetails = mapper.convertValue(flowJson, DqFlow.class);
+
         return dqFlowRepository.findById(id)
                 .map(flow -> {
                     flow.setName(flowDetails.getName());
@@ -61,12 +108,33 @@ public class DqFlowController {
                     // A simple replacement strategy for List<Steps> if passed fully:
                     flow.getSteps().clear();
                     if (flowDetails.getSteps() != null) {
-                        for (DqFlowStep step : flowDetails.getSteps()) {
+                        JsonNode stepsNode = flowJson.get("steps");
+                        for (int i = 0; i < flowDetails.getSteps().size(); i++) {
+                            DqFlowStep step = flowDetails.getSteps().get(i);
+
+                            if (stepsNode != null && stepsNode.has(i)) {
+                                JsonNode stepNode = stepsNode.get(i);
+                                // Handle integrationId
+                                if (stepNode.has("integrationId") && !stepNode.get("integrationId").isNull()) {
+                                    Long integrationId = stepNode.get("integrationId").asLong();
+                                    DqIntegration integration = dqIntegrationRepository.findById(integrationId)
+                                            .orElse(null);
+                                    step.setIntegration(integration);
+                                }
+
+                                // Handle ruleId
+                                if (stepNode.has("ruleId") && !stepNode.get("ruleId").isNull()) {
+                                    Long ruleId = stepNode.get("ruleId").asLong();
+                                    DqRule rule = dqRuleRepository.findById(ruleId).orElse(null);
+                                    step.setRule(rule);
+                                }
+                            }
+
                             flow.addStep(step);
                         }
                     }
-
-                    return ResponseEntity.ok(dqFlowRepository.save(flow));
+                    DqFlow savedFlow = dqFlowRepository.save(flow);
+                    return ResponseEntity.ok(savedFlow);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

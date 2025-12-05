@@ -30,3 +30,14 @@ body {
 .mat-mdc-dialog-container .mdc-dialog__surface {
     border: 4px solid darkgreen !important;
 }
+
+// Reduce mat-card-header top margin
+.mat-mdc-card-header {
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+}
+
+mat-card-header {
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+}

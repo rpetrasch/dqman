@@ -22,13 +22,16 @@ public class RdbmsDataProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         DqIntegration integration = exchange.getIn().getBody(DqIntegration.class);
-        List<String> tableFieldList = exchange.getProperty("tableFieldList", List.class);
-        if (integration == null || tableFieldList == null) {
+        List<String> metadata = exchange.getIn().getHeader("metadata", List.class);
+        if (integration == null || metadata == null) {
             throw new IllegalArgumentException("Integration cannot be null");
         }
         // Extract table and field names from tableFieldList
         Map<String, Set<String>> tableFields = new HashMap<>();
-        for (String tableField : tableFieldList) {
+        for (String tableField : metadata) {
+            // Eliminate all chars after the first "("
+            tableField = tableField.substring(0, tableField.indexOf("("));
+            tableField = tableField.trim();
             String[] tableFieldParts = tableField.split("\\.");
             tableFields.computeIfAbsent(tableFieldParts[0], k -> new HashSet<>()).add(tableFieldParts[1]);
         }
@@ -40,11 +43,10 @@ public class RdbmsDataProcessor implements Processor {
                 integration.getUrl(), integration.getUser(), integration.getPassword())) {
             for (String tableName : tableFields.keySet()) {
                 java.sql.Statement stmt = conn.createStatement();
-                String fields = tableFields.get(tableName).stream().map(field -> field + ", ")
-                        .collect(Collectors.joining());
-                java.sql.ResultSet rs = stmt.executeQuery(
-                        "SELECT " + fields + " FROM " + tableName + " " +
-                                "ORDER BY " + fields);
+                String fields = tableFields.get(tableName).stream()
+                        .collect(Collectors.joining(", "));
+                String query = "SELECT " + fields + " FROM " + tableName + " ORDER BY " + fields;
+                java.sql.ResultSet rs = stmt.executeQuery(query);
 
                 List<List<String>> tableData = new ArrayList<>();
                 // header for table

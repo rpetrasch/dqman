@@ -80,16 +80,17 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Actions </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="accent" (click)="openFlowDialog(element)">
-                            <mat-icon>edit</mat-icon> Edit
-                        </button>
-                        <button mat-raised-button color="primary" (click)="openGraphDialog(element)"
-                            style="margin-left: 8px; margin-right: 8px;">
-                            <mat-icon>hub</mat-icon> Graph
-                        </button>
-                        <button mat-raised-button color="warn" (click)="deleteFlow(element.id)">
-                            <mat-icon>delete</mat-icon> Delete
-                        </button>
+                        <div class="action-buttons">
+                            <button mat-raised-button color="accent" (click)="openFlowDialog(element)">
+                                <mat-icon>edit</mat-icon> Edit
+                            </button>
+                            <button mat-raised-button color="primary" (click)="openGraphDialog(element)">
+                                <mat-icon>hub</mat-icon> Graph
+                            </button>
+                            <button mat-raised-button color="warn" (click)="deleteFlow(element.id)">
+                                <mat-icon>delete</mat-icon> Delete
+                            </button>
+                        </div>
                     </td>
                 </ng-container>
 

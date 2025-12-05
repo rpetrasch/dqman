@@ -31,3 +31,45 @@ mat-form-field {
     border-radius: 4px;
     font-size: 12px;
 }
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.action-buttons button {
+    margin: 0;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    line-height: 24px !important;
+    min-width: auto !important;
+}
+
+.action-buttons button mat-icon {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    margin-right: 4px;
+}
+
+/* Override Material button padding */
+::ng-deep .action-buttons .mat-mdc-raised-button {
+    padding: 4px 8px !important;
+    min-width: auto !important;
+}
+
+::ng-deep .action-buttons .mat-mdc-button-base {
+    height: 32px !important;
+}
+
+td.mat-cell {
+    padding-right: 16px;
+}
+
+/* Ensure actions column has enough width */
+.mat-column-actions {
+    min-width: 280px;
+}

@@ -34,7 +34,7 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
 })
 export class IntegrationComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<DqIntegration>([]);
-  displayedColumns: string[] = ['id', 'name', 'description', 'type', 'url', 'user', 'password', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'type', 'url', 'user', 'actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -46,8 +46,7 @@ export class IntegrationComponent implements OnInit, AfterViewInit {
     description: '',
     type: '',
     url: '',
-    user: '',
-    password: ''
+    user: ''
   };
 
   constructor(
@@ -167,6 +166,21 @@ export class IntegrationComponent implements OnInit, AfterViewInit {
           this.dqIntegrationService.deleteIntegration(id).subscribe(() => {
             this.loadIntegrations();
           });
+        }
+      });
+    }
+  }
+
+  testIntegration(integration: DqIntegration): void {
+    if (integration.id) {
+      this.dqIntegrationService.getMetadata(integration.id).subscribe({
+        next: (metadata) => {
+          console.log('Metadata for integration:', metadata);
+          alert('Test successful! Check console for metadata.');
+        },
+        error: (error) => {
+          console.error('Test failed:', error);
+          alert('Test failed: ' + (error.error?.message || error.message || 'Unknown error'));
         }
       });
     }

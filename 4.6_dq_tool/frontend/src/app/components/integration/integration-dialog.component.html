@@ -49,11 +49,32 @@
                 <input matInput [(ngModel)]="integration.password" type="password" />
             </mat-form-field>
         </div>
+
+        <!-- Test Results Section -->
+        <div *ngIf="isTesting" class="test-loading">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span>Testing connection...</span>
+        </div>
+
+        <div *ngIf="testResult" class="test-result test-success">
+            <strong>✓ Connection successful! Metadata:</strong>
+            <div style="margin-top: 8px; font-family: monospace; white-space: pre-wrap;">{{ testResult.join('\n') }}
+            </div>
+        </div>
+
+        <div *ngIf="testError" class="test-result test-error">
+            <strong>✗ Connection failed:</strong>
+            <div style="margin-top: 8px;">{{ testError }}</div>
+        </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()">
         <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-button color="accent" (click)="onTest()"
+        [disabled]="!integration.name || !integration.url || isTesting">
+        <mat-icon>science</mat-icon> Test
     </button>
     <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!integration.name">
         <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}

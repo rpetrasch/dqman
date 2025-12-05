@@ -24,10 +24,11 @@ public class IntegrationService {
         return metadata;
     }
 
-    public Map<String, List<List<String>>> getData(DqIntegration integration) {
+    public Map<String, List<List<String>>> getData(DqIntegration integration, List<String> metadata4) {
         Map<String, List<List<String>>> data = switch (integration.getType()) {
-            case "RDBMS" -> producerTemplate.requestBody("direct:fetchDataRdbms", integration, Map.class);
-            case "FILE" -> producerTemplate.requestBody("direct:fetchDataFile", integration, Map.class);
+            case "RDBMS" -> producerTemplate.requestBodyAndHeader("direct:fetchDataRdbms", integration, "metadata",
+                    metadata4, Map.class);
+            case "CSV" -> producerTemplate.requestBody("direct:fetchDataFile", integration, Map.class);
             default -> null;
         };
         return data;

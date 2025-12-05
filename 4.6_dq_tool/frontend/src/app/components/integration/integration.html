@@ -89,22 +89,21 @@
                     <td mat-cell *matCellDef="let element"> {{element.user}} </td>
                 </ng-container>
 
-                <!-- Password Column -->
-                <ng-container matColumnDef="password">
-                    <th mat-header-cell *matHeaderCellDef> Password </th>
-                    <td mat-cell *matCellDef="let element"> ****** </td>
-                </ng-container>
-
                 <!-- Actions Column -->
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Actions </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="accent" (click)="openIntegrationDialog(element)">
-                            <mat-icon>edit</mat-icon> Edit
-                        </button>
-                        <button mat-raised-button color="warn" (click)="deleteIntegration(element.id)">
-                            <mat-icon>delete</mat-icon> Delete
-                        </button>
+                        <div class="action-buttons">
+                            <button mat-raised-button color="primary" (click)="testIntegration(element)">
+                                <mat-icon>science</mat-icon> Test
+                            </button>
+                            <button mat-raised-button color="accent" (click)="openIntegrationDialog(element)">
+                                <mat-icon>edit</mat-icon> Edit
+                            </button>
+                            <button mat-raised-button color="warn" (click)="deleteIntegration(element.id)">
+                                <mat-icon>delete</mat-icon> Delete
+                            </button>
+                        </div>
                     </td>
                 </ng-container>
 

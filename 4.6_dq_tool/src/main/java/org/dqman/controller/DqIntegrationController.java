@@ -64,12 +64,20 @@ public class DqIntegrationController {
 
     @GetMapping("/metadata/{id}")
     public ResponseEntity<List<String>> getIntegrationMetadata(@PathVariable Long id) {
-        DqIntegration integration = dqIntegrationRepository.findById(id).orElse(null);
-        if (integration == null) {
-            return ResponseEntity.notFound().build();
+        try {
+            DqIntegration integration = dqIntegrationRepository.findById(id).orElse(null);
+            if (integration == null) {
+                return ResponseEntity.notFound().build();
+            }
+            List<String> metadata = integrationService.getMetadata(integration);
+            if (metadata == null) {
+                return ResponseEntity.status(500).body(List.of("No metadata returned"));
+            }
+            return ResponseEntity.ok(metadata);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(List.of("Error: " + e.getMessage()));
         }
-        List<String> metadata = integrationService.getMetadata(integration);
-        return ResponseEntity.ok(metadata);
     }
 
     @GetMapping("/data/{id}")
@@ -78,7 +86,8 @@ public class DqIntegrationController {
         if (integration == null) {
             return ResponseEntity.notFound().build();
         }
-        Map<String, List<List<String>>> data = integrationService.getData(integration);
+        List<String> metadata = integrationService.getMetadata(integration); // ToDo optional metadata parameter
+        Map<String, List<List<String>>> data = integrationService.getData(integration, metadata);
         return ResponseEntity.ok(data);
     }
 }

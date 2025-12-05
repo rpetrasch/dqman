@@ -20,10 +20,26 @@
     npm install
     ```
 
-## Running the Application
+## Running the Application: manual (no docker)
+### start postgresql
+- use docker to start postgresql:
+```bash
+docker compose up crm-postgres
+```
 
 ### Backend
-Start the Spring Boot application:
+- set the following workspace in the launch.json (in the .vscode folder):
+```json
+        {
+            "type": "java",
+            "name": "DQ Tool",
+            "request": "launch",
+            "mainClass": "org.dqman.Main",
+            "projectName": "6_dq_tool",
+            "cwd": "${workspaceFolder}/4.6_dq_tool/"
+        }
+
+- Start the Spring Boot application:
 ```bash
 cd _4_6_dq_tool
 mvn spring-boot:run
@@ -46,3 +62,9 @@ The H2 Console is enabled and can be accessed at `http://localhost:8080/h2-conso
 - **JDBC URL**: `jdbc:h2:mem:testdb`
 - **User Name**: `sa`
 - **Password**: `password`
+
+# Running the Application: docker
+- use docker-compose to run the application:
+```bash
+docker-compose up
+```

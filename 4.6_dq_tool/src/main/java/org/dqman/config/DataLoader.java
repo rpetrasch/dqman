@@ -60,17 +60,17 @@ public class DataLoader {
             createFlows(dqFlowRepository);
             // Fetch metadata for integration 2 (postgres crm test database)
             DqIntegration i2 = dqIntegrationRepository.findById(2L).get();
-            List<String> metadata = integrationService.getMetadata(i2);
-            log.info("Metadata for integration 2: {}", metadata);
+            List<String> metadata2 = integrationService.getMetadata(i2);
+            log.info("Metadata for integration 2: {}", metadata2);
             // Fetch metadata for integration 4 (csv customer data)
             DqIntegration i4 = dqIntegrationRepository.findById(4L).get();
             List<String> metadata4 = integrationService.getMetadata(i4);
             log.info("Metadata for integration 4: {}", metadata4);
             // Fetch data for integration 2 (postgres crm test database)
-            Map<String, List<List<String>>> data = integrationService.getData(i2);
-            log.info("Data for integration 2: {}", data);
+            Map<String, List<List<String>>> data2 = integrationService.getData(i2, metadata2);
+            log.info("Data for integration 2: {}", data2);
             // Fetch data for integration 4 (csv customer data)
-            Map<String, List<List<String>>> data4 = integrationService.getData(i4);
+            Map<String, List<List<String>>> data4 = integrationService.getData(i4, metadata4);
             log.info("Data for integration 4: {}", data4);
         };
 

@@ -21,7 +21,7 @@ public class IntegrationDataCreator {
     public void createIntegrations(DqIntegrationRepository repository) {
         if (repository.count() == 0) {
             DqIntegration i1 = new DqIntegration();
-            i1.setName("CRM Database");
+            i1.setName("CRM Database (docker)");
             i1.setDescription("Customer Relationship Management System (Docker)");
             i1.setType("RDBMS");
             i1.setUrl("jdbc:postgresql://crm-postgres:5432/crm_db");
@@ -29,7 +29,7 @@ public class IntegrationDataCreator {
             i1.setPassword("crm_password");
 
             DqIntegration i2 = new DqIntegration();
-            i2.setName("CRM Database");
+            i2.setName("CRM Database (localhost)");
             i2.setDescription("Customer Relationship Management System (localhost)");
             i2.setType("RDBMS");
             i2.setUrl("jdbc:postgresql://localhost:5432/crm_db");
@@ -37,7 +37,7 @@ public class IntegrationDataCreator {
             i2.setPassword("crm_password");
 
             DqIntegration i3 = new DqIntegration();
-            i3.setName("ERP System");
+            i3.setName("ERP System (localhost");
             i3.setDescription("Enterprise Resource Planning");
             i3.setType("RDBMS");
             i3.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
@@ -45,13 +45,13 @@ public class IntegrationDataCreator {
             i3.setPassword("erp_pass");
 
             DqIntegration i4 = new DqIntegration();
-            i4.setName("Customer CSV");
+            i4.setName("Customer CSV (local file)");
             i4.setDescription("Customer data");
             i4.setType("CSV");
             i4.setUrl("./data/customer.csv");
 
             DqIntegration i5 = new DqIntegration();
-            i5.setName("Web Analytics (local file)");
+            i5.setName("Web Analytics (S3)");
             i5.setDescription("Website traffic logs");
             i5.setType("CSV");
             i5.setUrl("s3://bucket/logs/web_analytics.csv");
