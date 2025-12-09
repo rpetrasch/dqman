@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:dqdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update  # Options: validate | update | create | create-drop
+    show-sql: true       # Displays SQL queries in the console
+    properties:
+      hibernate:
+        format_sql: true # Formats SQL output for readability
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false  # Recommended to avoid resource leaks
+    format_sql: false
+    envers:
+      audit_table_suffix: AUDIT
+      revision_field_name: NRO_ID_REVISAO_AUDITORIA
+      revision_type_field_name: TPO_REVISAO_AUDITORIA
+  h2:
+    console:
+      enabled: true      # Enables the H2 web console
+      path: /h2-console  # Access it via http://localhost:8080/h2-console
+
+server:
+  port: 8080

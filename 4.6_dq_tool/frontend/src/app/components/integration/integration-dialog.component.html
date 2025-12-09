@@ -1,0 +1,82 @@
+<h2 mat-dialog-title><mat-icon matListItemIcon>integration_instructions</mat-icon> {{ isEditMode ? 'Edit Integration' :
+    'Create New Integration' }}</h2>
+<mat-dialog-content>
+    <div style="display: flex; flex-direction: column;">
+        <!-- Row 1: ID and Name -->
+        <div class="form-row">
+            <mat-form-field class="quarter-width">
+                <mat-label>ID</mat-label>
+                <input matInput [value]="integration.id" disabled />
+            </mat-form-field>
+            <mat-form-field class="three-quarter-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="integration.name" required />
+            </mat-form-field>
+        </div>
+
+        <!-- Row 2: Description -->
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="integration.description" />
+        </mat-form-field>
+
+        <!-- Row 3: Type and URL -->
+        <div class="form-row">
+            <mat-form-field class="quarter-width">
+                <mat-label>Type</mat-label>
+                <mat-select [ngModel]="integration.type" (selectionChange)="onTypeChange($event.value)">
+                    <mat-option *ngFor="let type of typeOptions" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="three-quarter-width">
+                <mat-label>URL</mat-label>
+                <input matInput [(ngModel)]="integration.url" />
+            </mat-form-field>
+        </div>
+
+        <!-- Row 4: User and Password -->
+        <div class="form-row">
+            <mat-form-field class="half-width">
+                <mat-label>User</mat-label>
+                <input matInput [(ngModel)]="integration.user" />
+            </mat-form-field>
+
+            <mat-form-field class="half-width">
+                <mat-label>Password</mat-label>
+                <input matInput [(ngModel)]="integration.password" type="password" />
+            </mat-form-field>
+        </div>
+
+        <!-- Test Results Section -->
+        <div *ngIf="isTesting" class="test-loading">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span>Testing connection...</span>
+        </div>
+
+        <div *ngIf="testResult" class="test-result test-success">
+            <strong>✓ Connection successful! Metadata:</strong>
+            <div style="margin-top: 8px; font-family: monospace; white-space: pre-wrap;">{{ testResult.join('\n') }}
+            </div>
+        </div>
+
+        <div *ngIf="testError" class="test-result test-error">
+            <strong>✗ Connection failed:</strong>
+            <div style="margin-top: 8px;">{{ testError }}</div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-button color="accent" (click)="onTest()"
+        [disabled]="!integration.name || !integration.url || isTesting">
+        <mat-icon>science</mat-icon> Test
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!integration.name">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+</mat-dialog-actions>

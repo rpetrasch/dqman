@@ -1,0 +1,102 @@
+.dq-projects-container {
+  padding: 20px;
+}
+
+
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-right: 10px;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.status-CREATED {
+  color: #2196F3;
+  font-weight: bold;
+}
+
+.status-STARTED {
+  color: #FF9800;
+  font-weight: bold;
+}
+
+.status-SUCCESS {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.status-FAILED {
+  color: #F44336;
+  font-weight: bold;
+}
+
+.status-IN_PROGRESS {
+  color: #FFC107;
+  font-weight: bold;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+
+.filter-input {
+  width: 100%;
+  margin-top: 4px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.action-buttons button {
+  margin: 0;
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  line-height: 24px !important;
+  min-width: auto !important;
+}
+
+.action-buttons button mat-icon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 16px !important;
+  margin-right: 4px;
+}
+
+/* Override Material button padding */
+::ng-deep .action-buttons .mat-mdc-raised-button {
+  padding: 4px 8px !important;
+  min-width: auto !important;
+}
+
+::ng-deep .action-buttons .mat-mdc-button-base {
+  height: 32px !important;
+}
+
+td.mat-cell {
+  padding-right: 16px;
+}
+
+/* Ensure actions column has enough width */
+.mat-column-actions {
+  min-width: 200px;
+}

@@ -1,0 +1,36 @@
+services:
+  dq_postgres:
+    image: postgres:latest
+    container_name: dq_postgres
+    restart: "no"  # unless-stopped
+    environment:
+      POSTGRES_USER: dquser
+      POSTGRES_PASSWORD: dqpassword
+      POSTGRES_DB: dataquality
+    ports:
+      - "28100:5432"
+    volumes:
+      - dq_postgres_data2_2_2:/var/lib/postgresql/data
+
+  dq_cassandra:
+    image: cassandra:latest
+    container_name: dq_cassandra
+    restart: "no"  # unless-stopped
+    # environment:
+      # CASSANDRA_CLUSTER_NAME: "DQ_Cluster"
+      # CASSANDRA_NUM_TOKENS: "16"
+      # CASSANDRA_SEEDS: "cassandra"
+    ports:
+      - "28201:9042"  # CQL native transport port
+      - "28203:7000"  # Internode communication (not used if TLS enabled)
+      - "28204:7001"  # TLS Internode communication (used if TLS enabled)
+      - "28205:7199"  # JMX
+    volumes:
+      - ./cassandra.yaml:/etc/cassandra/cassandra.yaml
+      - ./cassandra-rackdc.properties:/etc/cassandra/cassandra-rackdc.properties
+      - dq_cassandra_data_2_2_2:/var/lib/cassandra
+
+volumes:
+  dq_postgres_data_2_2_2:
+  dq_cassandra_data_2_2_2:
+

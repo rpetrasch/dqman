@@ -1,0 +1,115 @@
+<div class="integration-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title><mat-icon matListItemIcon>integration_instructions</mat-icon> Data
+                Integrations</mat-card-title>
+            <div style="flex: 1 1 auto;"></div>
+            <button mat-raised-button color="primary" (click)="openIntegrationDialog()">
+                <mat-icon>add</mat-icon> Create Integration
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- Global Filter -->
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Global Search</mat-label>
+                <input matInput (keyup)="applyGlobalFilter($event)" placeholder="Search all columns">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>ID</div>
+                            <input matInput (keyup)="applyColumnFilter('id', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Name</div>
+                            <input matInput (keyup)="applyColumnFilter('name', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Description</div>
+                            <input matInput (keyup)="applyColumnFilter('description', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                </ng-container>
+
+                <!-- Type Column -->
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Type</div>
+                            <input matInput (keyup)="applyColumnFilter('type', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                </ng-container>
+
+                <!-- URL Column -->
+                <ng-container matColumnDef="url">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>URL</div>
+                            <input matInput (keyup)="applyColumnFilter('url', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.url}} </td>
+                </ng-container>
+
+                <!-- User Column -->
+                <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>User</div>
+                            <input matInput (keyup)="applyColumnFilter('user', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="action-buttons">
+                            <button mat-raised-button color="primary" (click)="testIntegration(element)">
+                                <mat-icon>science</mat-icon> Test
+                            </button>
+                            <button mat-raised-button color="accent" (click)="openIntegrationDialog(element)">
+                                <mat-icon>edit</mat-icon> Edit
+                            </button>
+                            <button mat-raised-button color="warn" (click)="deleteIntegration(element.id)">
+                                <mat-icon>delete</mat-icon> Delete
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,85 @@
+<h2 mat-dialog-title><mat-icon matListItemIcon>schema</mat-icon> {{ isEditMode ? 'Edit Flow' : 'Create New Flow' }}</h2>
+<mat-dialog-content>
+    <div style="display: flex; flex-direction: column;">
+        <!-- Row 1: ID and Name -->
+        <div class="form-row">
+            <mat-form-field class="quarter-width">
+                <mat-label>ID</mat-label>
+                <input matInput [value]="flow.id" disabled />
+            </mat-form-field>
+            <mat-form-field class="three-quarter-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="flow.name" required />
+            </mat-form-field>
+        </div>
+
+        <!-- Row 2: Description -->
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="flow.description" />
+        </mat-form-field>
+
+        <!-- Row 3: Status -->
+        <mat-form-field class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="flow.status">
+                <mat-option *ngFor="let status of statusOptions" [value]="status">
+                    {{ status }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Steps Section -->
+        <div class="steps-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3>Flow Steps</h3>
+                <button mat-stroked-button color="primary" (click)="addStep()">Add Step</button>
+            </div>
+
+            <table mat-table [dataSource]="stepsDataSource" class="mat-elevation-z1" style="width: 100%;">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let step">{{ step.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let step">{{ step.type }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let step">{{ step.description }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let step; let i = index">
+                        <div style="display: flex; gap: 4px;">
+                            <button mat-icon-button color="accent" (click)="editStep(step, i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteStep(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedStepColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedStepColumns;"></tr>
+            </table>
+            <div *ngIf="flow.steps.length === 0" style="text-align: center; padding: 20px; color: gray;">
+                No steps added yet.
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!flow.name">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+</mat-dialog-actions>

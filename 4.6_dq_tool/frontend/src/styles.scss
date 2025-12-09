@@ -1,0 +1,43 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-app-theme: mat.define-theme((color: (theme-type: dark,
+                primary: mat.$green-palette,
+            )));
+
+@include mat.all-component-themes($my-app-theme);
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.quarter-width {
+    width: 25%;
+}
+
+.three-quarter-width {
+    width: 75%;
+}
+
+// Add border to dialogs to separate from background
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border: 4px solid darkgreen !important;
+}
+
+// Reduce mat-card-header top margin
+.mat-mdc-card-header {
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+}
+
+mat-card-header {
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+}

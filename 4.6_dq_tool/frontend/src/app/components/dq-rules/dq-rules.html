@@ -1,0 +1,98 @@
+<div class="dq-rules-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title><mat-icon matListItemIcon>gavel</mat-icon> DQ Rules Management</mat-card-title>
+            <div style="flex: 1 1 auto;"></div>
+            <button mat-raised-button color="primary" (click)="openRuleDialog()">
+                <mat-icon>add</mat-icon> Create Rule
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- Global Filter -->
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Global Search</mat-label>
+                <input matInput (keyup)="applyGlobalFilter($event)" placeholder="Search all columns">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <!-- Rules List Table -->
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+                <!-- ID Column with Filter -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>ID</div>
+                            <input matInput (keyup)="applyColumnFilter('id', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let rule">{{ rule.id }}</td>
+                </ng-container>
+
+                <!-- Name Column with Filter -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Name</div>
+                            <input matInput (keyup)="applyColumnFilter('name', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let rule">{{ rule.name }}</td>
+                </ng-container>
+
+                <!-- Description Column with Filter -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Description</div>
+                            <input matInput (keyup)="applyColumnFilter('description', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let rule">{{ rule.description }}</td>
+                </ng-container>
+
+                <!-- Rule Type Column with Filter -->
+                <ng-container matColumnDef="ruleType">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Type</div>
+                            <input matInput (keyup)="applyColumnFilter('ruleType', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let rule">{{ rule.ruleType }}</td>
+                </ng-container>
+
+                <!-- Source Fields Column with Filter -->
+                <ng-container matColumnDef="sourceFields">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="header-content">
+                            <div mat-sort-header>Source Fields</div>
+                            <input matInput (keyup)="applyColumnFilter('sourceFields', $event)" placeholder="Filter"
+                                class="filter-input">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let rule">{{ rule.sourceTableFieldList?.join(', ') || 'None' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let rule">
+                        <button mat-raised-button color="accent" (click)="openRuleDialog(rule)">
+                            <mat-icon>edit</mat-icon> Edit
+                        </button>
+                        <button mat-raised-button color="warn" (click)="deleteRule(rule.id)">
+                            <mat-icon>delete</mat-icon> Delete
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,69 @@
+<div class="dashboard-container">
+    <mat-card-header>
+        <mat-card-title><mat-icon matListItemIcon>dashboard</mat-icon> Dashboard</mat-card-title>
+    </mat-card-header>
+
+    <div class="charts-row">
+        <mat-card class="chart-card">
+            <mat-card-header>
+                <mat-card-title>Status Distribution</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="chart-container">
+                    <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" type="pie">
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+            <mat-card-header>
+                <mat-card-title>7-Day Trend</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="chart-container">
+                    <canvas baseChart [data]="barChartData" [options]="barChartOptions" type="bar">
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <mat-card class="projects-card">
+        <mat-card-header>
+            <mat-card-title>Recent Projects</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table mat-table [dataSource]="projects" class="mat-elevation-z8">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdDate">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td mat-cell *matCellDef="let project">{{ project.createdDate | date:'short' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="startedDate">
+                    <th mat-header-cell *matHeaderCellDef>Started</th>
+                    <td mat-cell *matCellDef="let project">{{ project.startedDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="finishedDate">
+                    <th mat-header-cell *matHeaderCellDef>Finished</th>
+                    <td mat-cell *matCellDef="let project">{{ project.finishedDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let project">
+                        <span [ngClass]="'status-' + project.status">{{ project.status }}</span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

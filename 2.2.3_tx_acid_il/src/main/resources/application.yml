@@ -1,0 +1,24 @@
+spring:
+  # profiles:
+    # active: h2  # Use application-h2.yml for H2 Database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dataquality
+    driver-class-name: org.postgresql.Driver
+    username: dquser
+    password: dqpassword
+  jpa:
+    hibernate:
+      ddl-auto: update  # Options: validate | update | create | create-drop
+    show-sql: true       # Displays SQL queries in the console
+    properties:
+      hibernate:
+        format_sql: false # Formats SQL output for readability
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false  # Recommended to avoid resource leaks
+    format_sql: false
+
+
+server:
+  port: 8081            # Application will run on port 8081
+
+

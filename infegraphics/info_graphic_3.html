@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality for Software Engineers - Infographic</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4f46e5',   /* Indigo 600 */
+                        secondary: '#06b6d4', /* Cyan 500 */
+                        accent: '#f43f5e',    /* Rose 500 */
+                        dark: '#0f172a',      /* Slate 900 */
+                        light: '#f8fafc',     /* Slate 50 */
+                        card: '#ffffff',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+        
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px;
+            max-height: 400px;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #4f46e5, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Card Hover Effect */
+        .hover-lift {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Process Flow Arrows (CSS Shapes) */
+        .arrow-right {
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #cbd5e1;
+        }
+    </style>
+    
+    <!-- 
+    PALETTE: "Vibrant Tech"
+    Primary: Indigo (#4f46e5)
+    Secondary: Cyan (#06b6d4)
+    Accent: Rose (#f43f5e)
+    Background: Slate 100 (#f1f5f9)
+    -->
+    <!-- 
+    CONFIRMATION: 
+    - Mermaid JS NOT used.
+    - SVG graphics NOT used (Canvas/HTML used).
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Header / Hero Section -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">DQ<span class="text-primary">4</span>SWE</h1>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-500">
+                <a href="#impact" class="hover:text-primary transition-colors">Business Impact</a>
+                <a href="#governance" class="hover:text-primary transition-colors">Governance</a>
+                <a href="#dimensions" class="hover:text-primary transition-colors">Dimensions</a>
+                <a href="#ai" class="hover:text-primary transition-colors">AI Readiness</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Title Section -->
+        <div class="text-center mb-16">
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold tracking-wide uppercase mb-4">Based on "Data Quality for Software Engineers"</span>
+            <h2 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-4 tracking-tight">
+                Data is the <span class="text-gradient">Noble Raw Material</span>
+            </h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Without a refinery, it's just crude oil. Data Quality Engineering turns raw potential into trustworthy decisions, operational efficiency, and powerful AI.
+            </p>
+        </div>
+
+        <!-- SECTION 1: The High Cost of Poor Data -->
+        <section id="impact" class="mb-20">
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">The Price of "Dirty" Data</h3>
+                <p class="text-slate-600">Poor data isn't just an annoyance; it's a measurable financial liability. Based on the text's retail example, a single month of faulty data can incur significant costs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Text Context -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover-lift border-l-4 border-accent">
+                    <h4 class="text-lg font-bold text-slate-800 mb-2">Total Monthly Loss</h4>
+                    <p class="text-5xl font-extrabold text-accent mb-2">€25,500</p>
+                    <p class="text-sm text-slate-500">Per month in avoidable costs due to missing stock data, bad addresses, and misclassified products.</p>
+                    <hr class="my-4 border-slate-100">
+                    <p class="text-sm font-semibold text-slate-700">Impact Areas:</p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1">
+                        <li>Over-ordering & Storage</li>
+                        <li>Sales Losses</li>
+                        <li>Returns & Complaints</li>
+                        <li>Inefficient Marketing</li>
+                    </ul>
+                </div>
+
+                <!-- Visualization -->
+                <div class="md:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                    <h4 class="text-lg font-semibold text-slate-700 mb-6">Cost Breakdown by Root Cause</h4>
+                    <div class="chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-4">Source: Example cost/benefit analysis (Table 8)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Governance & Responsibility -->
+        <section id="governance" class="mb-20">
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Who Owns Data Quality?</h3>
+                <p class="text-slate-600">A common misconception is that DQ is purely an IT problem. The reality of Data Governance proves otherwise.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Visualization -->
+                <div class="bg-white rounded-xl shadow-lg p-6 order-2 md:order-1">
+                    <h4 class="text-lg font-semibold text-slate-700 mb-2 text-center">The 80/20 Rule of DQ Ownership</h4>
+                    <div class="chart-container">
+                        <canvas id="responsibilityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Text/Context -->
+                <div class="order-1 md:order-2 space-y-6">
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-secondary">
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">The Business (80%)</h4>
+                        <p class="text-slate-600 mb-3">The value and quality of data are largely determined by business definition and usage. Business units own the <strong>context</strong>.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded">Domain Owners</span>
+                            <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded">Data Stewards</span>
+                            <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded">Process Definitions</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">IT & Technology (20%)</h4>
+                        <p class="text-slate-600 mb-3">IT provides the infrastructure, architecture, and tools to enable governance. IT owns the <strong>platform</strong>.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">System Architecture</span>
+                            <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">Integration</span>
+                            <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">Security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: The Dimensions of Data Quality -->
+        <section id="dimensions" class="mb-20">
+            <div class="bg-slate-900 rounded-2xl shadow-2xl p-8 md:p-12 text-white overflow-hidden relative">
+                <!-- Background Pattern -->
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-primary opacity-20 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-secondary opacity-20 blur-3xl"></div>
+
+                <div class="relative z-10 mb-8">
+                    <h3 class="text-3xl font-bold mb-2">The 6 Core Dimensions (ISO/IEC 25012)</h3>
+                    <p class="text-slate-300">Measuring the "fitness for use" requires analyzing data across multiple vectors. A dataset can be complete but inaccurate, or accurate but outdated.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Text Descriptions -->
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">1</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Accuracy</h5>
+                                <p class="text-sm text-slate-400">Does it correctly reflect the real-world entity?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">2</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Completeness</h5>
+                                <p class="text-sm text-slate-400">Are all required values present?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">3</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Consistency</h5>
+                                <p class="text-sm text-slate-400">Is the data uniform across systems?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">4</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Timeliness</h5>
+                                <p class="text-sm text-slate-400">Is the data current enough for the task?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">5</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Uniqueness</h5>
+                                <p class="text-sm text-slate-400">Are there duplicates?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded bg-green-500 flex items-center justify-center text-xs font-bold mr-3">6</div>
+                            <div>
+                                <h5 class="font-bold text-slate-100">Validity</h5>
+                                <p class="text-sm text-slate-400">Does it conform to syntax/format rules?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visualization -->
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 backdrop-blur-sm">
+                        <h4 class="text-center text-sm font-semibold mb-4 text-slate-300">Profile: Healthy vs. Poor Dataset</h4>
+                        <div class="chart-container">
+                            <canvas id="dimensionsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Outlier Analysis (Statistical DQ) -->
+        <section id="analysis" class="mb-20">
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Statistical DQ: Spotting Outliers</h3>
+                <p class="text-slate-600">Simple validation isn't enough. Statistical distribution analysis reveals "hidden" bad data—like a customer with an age of -1 or 200.</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-4">
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-700">Age Distribution Analysis</h4>
+                        <p class="text-xs text-slate-500">Visualizing the "Customer Age" dataset from Section 1.4.5</p>
+                    </div>
+                    <div class="mt-2 md:mt-0 px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">
+                        3 Critical Anomalies Detected
+                    </div>
+                </div>
+                
+                <!-- Plotly Container -->
+                <div id="histogramContainer" class="w-full h-96"></div>
+                
+                <p class="text-sm text-slate-500 mt-4 italic text-center">
+                    Data Points: Normal distribution (18-67), plus anomalies (-1, 150, 200). Note the gaps and unrealistic extremes.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: AI Readiness -->
+        <section id="ai" class="mb-20">
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Data Quality & AI</h3>
+                <p class="text-slate-600">For AI, "Quality" means "Signal". Homogeneous or sparse data leads to model failure, even if the data is technically "clean".</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Visualization -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h4 class="text-lg font-semibold text-slate-700 mb-4">Model Prediction Error</h4>
+                    <p class="text-xs text-slate-500 mb-4">Based on Sales Prediction Example (Table 20)</p>
+                    <div class="chart-container">
+                        <canvas id="aiErrorChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 bg-slate-50 rounded text-xs text-slate-600">
+                        <strong>Key Insight:</strong> Region A (Diverse Data) has low error. Region D (Small Data/Single Point) has catastrophic error (13.2) because the model learned a spurious rule.
+                    </div>
+                </div>
+
+                <!-- Concept Flow -->
+                <div class="space-y-6">
+                    <div class="bg-indigo-50 rounded-xl p-6 border-l-4 border-primary">
+                        <h4 class="font-bold text-indigo-900 mb-2">The "Boiling Frog" Problem</h4>
+                        <p class="text-sm text-indigo-800">In sliding-window anomaly detection (e.g., motor vibration), slow degradation can be absorbed as the "new normal" if the window is too short. Quality monitoring requires long-horizon trend analysis.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h4 class="font-bold text-slate-800 mb-4">The AI-Readiness Checklist</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <span class="h-5 w-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold mr-3">✓</span>
+                                <span class="text-sm text-slate-600"><strong>Volume:</strong> Sufficient for the specific task?</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="h-5 w-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold mr-3">✓</span>
+                                <span class="text-sm text-slate-600"><strong>Representativeness:</strong> Matches real-world distribution?</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="h-5 w-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold mr-3">✓</span>
+                                <span class="text-sm text-slate-600"><strong>Label Quality:</strong> Consistent and unbiased annotations?</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="h-5 w-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold mr-3">✓</span>
+                                <span class="text-sm text-slate-600"><strong>Bias Check:</strong> Absence of hidden patterns?</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-slate-400 text-sm py-8 border-t border-slate-200">
+            <p>Data Quality for Software Engineers &copy; 2025</p>
+            <p class="mt-1">Generated by Canvas Infographics</p>
+        </footer>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- 1. GLOBAL SETTINGS & UTILS ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.scale.grid.color = '#e2e8f0';
+
+        // Label Wrapping Logic (16 char limit)
+        function wrapLabel(str) {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // Standard Tooltip Callback
+        const standardTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- 2. COST CHART (Bar) ---
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        const costLabels = ['Storage & Capital', 'Sales Losses', 'Returns & Complaints', 'Inefficient Marketing'];
+        const wrappedCostLabels = costLabels.map(wrapLabel);
+
+        new Chart(costCtx, {
+            type: 'bar',
+            data: {
+                labels: wrappedCostLabels,
+                datasets: [{
+                    label: 'Monthly Cost (€)',
+                    data: [12000, 6500, 4000, 3000],
+                    backgroundColor: [
+                        '#4f46e5', // Primary
+                        '#ec4899', // Accent
+                        '#06b6d4', // Secondary
+                        '#fbbf24'  // Amber
+                    ],
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal bar
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: standardTooltip
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // --- 3. RESPONSIBILITY CHART (Donut) ---
+        const respCtx = document.getElementById('responsibilityChart').getContext('2d');
+        const respLabels = ['Business Departments', 'IT Department'];
+        const wrappedRespLabels = respLabels.map(wrapLabel);
+
+        new Chart(respCtx, {
+            type: 'doughnut',
+            data: {
+                labels: wrappedRespLabels,
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#06b6d4', '#4f46e5'], // Secondary, Primary
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: standardTooltip
+                },
+                cutout: '70%'
+            }
+        });
+
+        // --- 4. DIMENSIONS CHART (Radar) ---
+        const dimCtx = document.getElementById('dimensionsChart').getContext('2d');
+        const dimLabels = ['Accuracy', 'Completeness', 'Consistency', 'Timeliness', 'Uniqueness', 'Validity'];
+        // No wrapping needed for these short labels, but applying function for safety
+        const wrappedDimLabels = dimLabels.map(wrapLabel);
+
+        new Chart(dimCtx, {
+            type: 'radar',
+            data: {
+                labels: wrappedDimLabels,
+                datasets: [
+                    {
+                        label: 'Ideal Dataset',
+                        data: [100, 100, 100, 100, 100, 100],
+                        fill: true,
+                        backgroundColor: 'rgba(6, 182, 212, 0.2)', // Cyan low opacity
+                        borderColor: '#06b6d4',
+                        pointBackgroundColor: '#06b6d4',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#06b6d4'
+                    },
+                    {
+                        label: 'Poor Dataset',
+                        data: [60, 85, 40, 90, 50, 70],
+                        fill: true,
+                        backgroundColor: 'rgba(236, 72, 153, 0.2)', // Pink low opacity
+                        borderColor: '#ec4899',
+                        pointBackgroundColor: '#ec4899',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#ec4899'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { color: '#cbd5e1' } // Light text for dark bg
+                    },
+                    tooltip: standardTooltip
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { 
+                            color: '#e2e8f0',
+                            font: { size: 12 }
+                        },
+                        ticks: { display: false, backdropColor: 'transparent' }
+                    }
+                }
+            }
+        });
+
+        // --- 5. OUTLIER CHART (Plotly Histogram) ---
+        // Data derived from Age example: [18, 16, 25, 102, 150, 67, 200, -1, 45]
+        const ageData = [18, 16, 25, 67, 45, 102, 150, 200, -1];
+        
+        const trace = {
+            x: ageData,
+            type: 'histogram',
+            marker: {
+                color: ageData.map(v => (v < 0 || v > 100) ? '#f43f5e' : '#4f46e5'), // Red for outliers, Indigo for normal
+                line: {
+                    color: 'white',
+                    width: 1
+                }
+            },
+            xbins: { 
+                size: 20, 
+            }
+        };
+
+        const layout = {
+            title: { text: 'Customer Age Frequency', font: {family: 'Inter, sans-serif'} },
+            font: { family: 'Inter, sans-serif', color: '#64748b' },
+            showlegend: false,
+            autosize: true,
+            margin: { l: 50, r: 20, t: 40, b: 40 },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            xaxis: { title: 'Age Value' },
+            yaxis: { title: 'Count' }
+        };
+
+        const config = { responsive: true, displayModeBar: false };
+        
+        Plotly.newPlot('histogramContainer', [trace], layout, config);
+
+
+        // --- 6. AI ERROR CHART (Bar) ---
+        const aiCtx = document.getElementById('aiErrorChart').getContext('2d');
+        const aiLabels = ['Region A (Good Data)', 'Region C (Homogeneous)', 'Region D (Small Data)'];
+        const wrappedAiLabels = aiLabels.map(wrapLabel);
+
+        new Chart(aiCtx, {
+            type: 'bar',
+            data: {
+                labels: wrappedAiLabels,
+                datasets: [{
+                    label: 'Prediction Error',
+                    data: [2.2, -10.6, 13.2], // Data from Table 20
+                    backgroundColor: [
+                        '#10b981', // Green (Good)
+                        '#f59e0b', // Amber (Warning)
+                        '#ef4444'  // Red (Failure)
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: standardTooltip,
+                    title: {
+                        display: true,
+                        text: 'Model Error Magnitude vs. Training Data Quality'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Error Value' }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+</html>
+</html>
+</html>

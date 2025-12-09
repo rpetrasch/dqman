@@ -1,0 +1,28 @@
+2025-11-26 12:49:33.216932+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS [*]order (id INT PRIMARY KEY, customer_id INT, product VARCHAR(255), amount DECIMAL(10,2), FOREIGN KEY (customer_id) REFERENCES customer(id))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS order (id INT PRIMARY KEY, customer_id INT, product VARCHAR(255), amount DECIMAL(10,2), FOREIGN KEY (customer_id) REFERENCES customer(id)) [42001-240]
+2025-11-26 12:52:03.663197+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CUSTOMER_ORDERVALUES" not found; SQL statement:
+INSERT INTO customer_orderVALUES (102, 2, 'Mouse', 29.99) [42102-240]
+2025-11-26 13:03:32.889656+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "CUSTOMER_ID" not found; SQL statement:
+DELETE FROM customer WHERE customer_id = 2 [42122-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
+	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:148)
+	at org.h2.expression.Expression.optimizeCondition(Expression.java:149)
+	at org.h2.command.dml.Delete.doPrepare(Delete.java:99)
+	at org.h2.command.dml.DataChangeStatement.prepare(DataChangeStatement.java:40)
+	at org.h2.command.Parser.prepareCommand(Parser.java:492)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.dqman.redundancy.Main.testCustomerOrderFK(Main.java:123)
+	at org.dqman.redundancy.Main.main(Main.java:37)

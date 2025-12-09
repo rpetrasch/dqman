@@ -1,0 +1,13 @@
+transformers
+sentencepiece
+sacremoses
+pandas
+requests
+numpy
+torch
+scikit-learn
+shap
+Flask
+matplotlib
+ollama
+pandera

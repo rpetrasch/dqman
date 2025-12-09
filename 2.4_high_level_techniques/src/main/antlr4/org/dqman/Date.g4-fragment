@@ -1,0 +1,11 @@
+grammar Date;
+
+date : year=YEAR HYPHEN month=MONTH HYPHEN day=DAY;
+
+YEAR   : DIGIT DIGIT DIGIT DIGIT;
+MONTH  : DIGIT DIGIT;
+DAY    : DIGIT DIGIT;
+HYPHEN : '-';
+WS     : [ \t\r\n]+ -> skip;
+
+fragment DIGIT : [0-9];

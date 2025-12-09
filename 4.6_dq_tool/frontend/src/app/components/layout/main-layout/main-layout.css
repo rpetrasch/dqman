@@ -1,0 +1,102 @@
+.sidenav-container {
+    height: 100%;
+}
+
+.sidenav {
+    width: 200px;
+}
+
+.sidenav .mat-toolbar {
+    background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.content {
+    padding: 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.logo-text {
+    background: linear-gradient(225deg, lightgreen, green);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-right: 4px;
+}
+
+.tool-text {
+    color: greenyellow;
+}
+
+/* Toolbar Search */
+.toolbar-search {
+    margin-left: 20px;
+    width: 400px;
+}
+
+::ng-deep .toolbar-search .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+::ng-deep .toolbar-search .mat-mdc-text-field-wrapper {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep .toolbar-search .mat-mdc-form-field-infix {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    min-height: auto;
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep .toolbar-search input {
+    color: white;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0;
+}
+
+::ng-deep .toolbar-search input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+::ng-deep .toolbar-search .mat-icon {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+
+
+/* Toolbar Spacer */
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+/* Toolbar Actions */
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toolbar-actions button {
+    color: white;
+}

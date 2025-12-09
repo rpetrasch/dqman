@@ -1,0 +1,27 @@
+spring:
+  # profiles:
+    # active: h2  # Use application-h2.yml for H2 Database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dataquality
+    driver-class-name: org.postgresql.Driver
+    username: dquser
+    password: dqpassword
+  jpa:
+    hibernate:
+      ddl-auto: update  # Options: validate | update | create | create-drop
+    show-sql: false       # Displays SQL queries in the console
+    properties:
+      hibernate:
+        format_sql: true # Formats SQL output for readability
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false  # Recommended to avoid resource leaks
+    format_sql: false
+    envers:
+      audit_table_suffix: AUDIT
+      revision_field_name: NRO_ID_REVISAO_AUDITORIA
+      revision_type_field_name: TPO_REVISAO_AUDITORIA
+
+server:
+  port: 8080
+
+

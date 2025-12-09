@@ -1,0 +1,80 @@
+<h2 mat-dialog-title><mat-icon matListItemIcon>gavel</mat-icon> {{ isEditMode ? 'Edit Rule' : 'Create New Rule' }}</h2>
+<mat-dialog-content>
+    <div style="display: flex; flex-direction: column;">
+        <!-- Row 1: ID and Name -->
+        <div class="form-row">
+            <mat-form-field class="quarter-width">
+                <mat-label>ID</mat-label>
+                <input matInput [value]="rule.id" disabled />
+            </mat-form-field>
+            <mat-form-field class="three-quarter-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="rule.name" required />
+            </mat-form-field>
+        </div>
+
+        <!-- Row 2: Description -->
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="rule.description" />
+        </mat-form-field>
+
+        <!-- Row 3: Rule Type and Rule Value -->
+        <div class="form-row">
+            <mat-form-field class="half-width">
+                <mat-label>Rule Tyoe</mat-label>
+                <mat-select [ngModel]="rule.ruleType" (selectionChange)="onRuleTypeChange($event.value)">
+                    <mat-option *ngFor="let type of ruleTypeOptions" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Row 4: Rule Value -->
+        <div class="form-row">
+            <mat-form-field class="full-width">
+                <mat-label>Rule Value</mat-label>
+                <textarea matInput [(ngModel)]="rule.ruleValue"></textarea>
+            </mat-form-field>
+        </div>
+
+        <!-- Row 5: Source Table Field List -->
+        <div class="form-row" style="flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label style="font-weight: 500; color: rgba(0, 0, 0, 0.6);">Source Table Fields</label>
+                <button mat-mini-fab color="primary" type="button" (click)="addSourceField()"
+                    style="transform: scale(0.7);">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <div *ngFor="let field of rule.sourceTableFieldList; let i = index; trackBy: trackByIndex"
+                style="display: flex; gap: 8px; margin-bottom: 8px;">
+                <mat-form-field style="flex: 1;">
+                    <mat-label>Field {{ i + 1 }}</mat-label>
+                    <input matInput [ngModel]="rule.sourceTableFieldList![i]"
+                        (ngModelChange)="rule.sourceTableFieldList![i] = $event"
+                        placeholder="e.g., schema.table.column" />
+                </mat-form-field>
+                <button mat-icon-button color="warn" type="button" (click)="removeSourceField(i)"
+                    style="align-self: center;">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <div *ngIf="!rule.sourceTableFieldList || rule.sourceTableFieldList.length === 0"
+                style="color: rgba(0, 0, 0, 0.4); font-style: italic; padding: 8px;">
+                No source fields defined. Click + to add fields.
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!rule.name">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+</mat-dialog-actions>

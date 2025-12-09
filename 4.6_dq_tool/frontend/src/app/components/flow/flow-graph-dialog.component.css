@@ -1,0 +1,201 @@
+@import 'drawflow/dist/drawflow.min.css';
+
+.graph-content {
+    height: 700px;
+    width: 1400px;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.graph-toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.drawflow-container {
+    flex: 1;
+    background-color: black;
+    background-size: 20px 20px;
+    background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+}
+
+
+
+.execution-panel {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: #fafafa;
+    border-left: 1px solid #ddd;
+}
+
+.execution-panel h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.execution-panel h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.message-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.message-content {
+    flex: 1;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 200px;
+    max-height: 500px;
+}
+
+/* Custom scrollbar styling */
+.message-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.message-content::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 6px;
+}
+
+.message-content::-webkit-scrollbar-thumb {
+    background: #757575;
+    border-radius: 6px;
+    border: 2px solid #e0e0e0;
+}
+
+.message-content::-webkit-scrollbar-thumb:hover {
+    background: #424242;
+}
+
+.message-content pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #2e7d32;
+}
+
+
+.message-content.has-error pre {
+    color: #c62828;
+}
+
+.error-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #c62828;
+}
+
+.error-message mat-icon {
+    color: #c62828;
+}
+
+.error-message ul {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.error-message li {
+    margin-bottom: 4px;
+}
+
+.success-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #2e7d32;
+}
+
+.success-message mat-icon {
+    color: #2e7d32;
+}
+
+.placeholder {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* Custom Node Styles */
+.drawflow .drawflow-node {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 200px;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.drawflow .drawflow-node.selected {
+    background: #fff;
+    border-color: #2196f3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+.flow-step-node {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.step-type {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    align-self: flex-start;
+}
+
+/* Node Type Specific Colors */
+.drawflow-node.node-source .drawflow_content_node {
+    border-top: 4px solid #4CAF50;
+}
+
+.drawflow-node.node-rule .drawflow_content_node {
+    border-top: 4px solid #F44336;
+}
+
+.drawflow-node.node-transform .drawflow_content_node {
+    border-top: 4px solid #FFC107;
+}
+
+.drawflow-node.node-decision .drawflow_content_node {
+    border-top: 4px solid #9C27B0;
+}
+
+.drawflow-node.node-sink .drawflow_content_node {
+    border-top: 4px solid #2196F3;
+}
+
+.drawflow-node.node-default .drawflow_content_node {
+    border-top: 4px solid #607D8B;
+}

@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>
+    <mat-icon matListItemIcon>schema</mat-icon> Flow Graph: {{ flow.name }}
+</h2>
+<mat-dialog-content class="graph-content">
+    <div style="display: flex; height: 100%; gap: 16px;">
+        <!-- Left side: Graph area with toolbar -->
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <!-- Toolbar -->
+            <div class="graph-toolbar">
+                <button mat-raised-button color="primary" (click)="onAddStep()">
+                    <mat-icon>add</mat-icon> New Step
+                </button>
+                <button mat-raised-button color="warn" (click)="onDeleteStep()" [disabled]="!selectedNodeId">
+                    <mat-icon>delete</mat-icon> Delete Step
+                </button>
+                <button mat-raised-button (click)="onAutoLayout()">
+                    <mat-icon>auto_awesome</mat-icon> Auto Layout
+                </button>
+            </div>
+
+            <!-- Drawflow canvas -->
+            <div id="drawflow" #drawflow class="drawflow-container"></div>
+        </div>
+
+        <!-- Right side: Execution panel -->
+        <div class="execution-panel">
+            <h3>Execution</h3>
+            <button mat-raised-button color="primary" (click)="onValidate()" style="width: 100%; margin-bottom: 8px;">
+                <mat-icon>check_circle</mat-icon> Validate Flow
+            </button>
+            <button mat-raised-button color="accent" (click)="onExecute()" style="width: 100%; margin-bottom: 16px;">
+                <mat-icon>play_arrow</mat-icon> Execute Flow
+            </button>
+
+            <!-- Validation Results -->
+            <div *ngIf="validationResult || validationErrors.length > 0" class="message-area"
+                style="margin-bottom: 16px;">
+                <h4>Validation:</h4>
+                <div class="message-content" [class.has-error]="validationErrors.length > 0">
+                    <div *ngIf="validationResult" class="success-message">
+                        <mat-icon>check_circle</mat-icon>
+                        <p>{{ validationResult }}</p>
+                    </div>
+                    <div *ngIf="validationErrors.length > 0" class="error-message">
+                        <mat-icon>error</mat-icon>
+                        <div>
+                            <p><strong>Validation Errors:</strong></p>
+                            <ul>
+                                <li *ngFor="let error of validationErrors">{{ error }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="message-area">
+                <h4>Output:</h4>
+                <div class="message-content" [class.has-error]="executionError">
+                    <div *ngIf="isExecuting" style="text-align: center; padding: 20px;">
+                        <mat-spinner diameter="40"></mat-spinner>
+                        <p>Executing flow...</p>
+                    </div>
+                    <div *ngIf="!isExecuting && executionResult">
+                        <pre>{{ executionResult }}</pre>
+                    </div>
+                    <div *ngIf="!isExecuting && executionError" class="error-message">
+                        <mat-icon>error</mat-icon>
+                        <p>{{ executionError }}</p>
+                    </div>
+                    <div *ngIf="!isExecuting && !executionResult && !executionError" class="placeholder">
+                        Click "Execute Flow" to run the flow and see results here.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onClose()">
+        <mat-icon>close</mat-icon> Close
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()">
+        <mat-icon>save</mat-icon> Save
+    </button>
+    <button mat-raised-button color="primary" (click)="onSaveAndClose()">
+        <mat-icon>save</mat-icon> Save & Close
+    </button>
+</mat-dialog-actions>

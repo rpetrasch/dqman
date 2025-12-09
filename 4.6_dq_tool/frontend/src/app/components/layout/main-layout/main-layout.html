@@ -1,0 +1,108 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-toolbar>
+            <mat-nav-list>
+                <a mat-list-item routerLink="/dashboard">
+                    <div class="logo-container">
+                        <span class="logo-text">DQ</span>
+                        <span class="tool-text">Tool</span>
+                    </div>
+                </a>
+            </mat-nav-list>
+        </mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard">
+                <mat-icon matListItemIcon>dashboard</mat-icon>
+                <span matListItemTitle>Dashboard</span>
+            </a>
+            <a mat-list-item routerLink="/projects">
+                <mat-icon matListItemIcon>folder</mat-icon>
+                <span matListItemTitle>DQ Projects</span>
+            </a>
+            <a mat-list-item routerLink="/rules">
+                <mat-icon matListItemIcon>gavel</mat-icon>
+                <span matListItemTitle>DQ Rules</span>
+            </a>
+            <a mat-list-item routerLink="/integration">
+                <mat-icon matListItemIcon>integration_instructions</mat-icon>
+                <span matListItemTitle>Data Integration</span>
+            </a>
+            <a mat-list-item routerLink="/flow">
+                <mat-icon matListItemIcon>schema</mat-icon>
+                <span matListItemTitle>Flows</span>
+            </a>
+            <a mat-list-item routerLink="/alerts">
+                <mat-icon matListItemIcon>notifications</mat-icon>
+                <span matListItemTitle>Alerts</span>
+            </a>
+            <a mat-list-item routerLink="/reports">
+                <mat-icon matListItemIcon>assessment</mat-icon>
+                <span matListItemTitle>Reports</span>
+            </a>
+
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                *ngIf="isHandset$ | async">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+
+            <!-- Global Search -->
+            <mat-form-field appearance="outline" class="toolbar-search">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput placeholder="Global search..." [(ngModel)]="globalSearchText">
+            </mat-form-field>
+
+            <!-- Spacer to push icons to the right -->
+            <span class="toolbar-spacer"></span>
+
+            <!-- Toolbar Action Icons -->
+            <div class="toolbar-actions">
+                <button mat-icon-button matTooltip="Help" (click)="onHelp()">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Alerts" (click)="onAlerts()" [matBadge]="alertCount"
+                    [matBadgeHidden]="alertCount === 0" matBadgeColor="warn" matBadgeSize="small">
+                    <mat-icon>notifications</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Settings" (click)="onSettings()">
+                    <mat-icon>settings</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="AI Assistant" (click)="onAIAssistant()">
+                    <mat-icon>smart_toy</mat-icon>
+                </button>
+
+                <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="Account">
+                    <mat-icon>account_circle</mat-icon>
+                </button>
+            </div>
+
+            <!-- User Menu -->
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="onProfile()">
+                    <mat-icon>person</mat-icon>
+                    <span>Profile</span>
+                </button>
+                <button mat-menu-item (click)="onAccountSettings()">
+                    <mat-icon>settings</mat-icon>
+                    <span>Account Settings</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="onLogout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+
+        </mat-toolbar>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,81 @@
+<h2 mat-dialog-title><mat-icon matListItemIcon>folder</mat-icon> {{ isEditMode ? 'Edit Project' : 'Create New Project'
+  }}
+</h2>
+<mat-dialog-content>
+  <div style="display: flex; flex-direction: column;">
+    <!-- Row 1: ID and Name -->
+    <div class="form-row">
+      <mat-form-field class="quarter-width">
+        <mat-label>ID</mat-label>
+        <input matInput [value]="project.id" disabled />
+      </mat-form-field>
+      <mat-form-field class="three-quarter-width">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="project.name" required />
+      </mat-form-field>
+    </div>
+
+    <!-- Row 2: Description -->
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="project.description"></textarea>
+    </mat-form-field>
+
+    <!-- Row 3: Status and Flow -->
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Status</mat-label>
+        <mat-select [ngModel]="project.status" (selectionChange)="onStatusChange($event.value)">
+          <mat-option *ngFor="let status of statusOptions" [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Flow</mat-label>
+        <mat-select [(ngModel)]="selectedFlowId" (selectionChange)="onFlowChange($event.value)">
+          <mat-option [value]="undefined">None</mat-option>
+          <mat-option *ngFor="let flow of flows" [value]="flow.id">
+            {{ flow.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Row 4: Created Date and Started Date -->
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Created Date</mat-label>
+        <input matInput [matDatepicker]="createdPicker" [(ngModel)]="project.createdDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="createdPicker"></mat-datepicker-toggle>
+        <mat-datepicker #createdPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Started Date</mat-label>
+        <input matInput [matDatepicker]="startedPicker" [(ngModel)]="project.startedDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="startedPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startedPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Row 5: Finished Date -->
+    <div class="form-row">
+      <mat-form-field class="full-width">
+        <mat-label>Finished Date</mat-label>
+        <input matInput [matDatepicker]="finishedPicker" [(ngModel)]="project.finishedDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="finishedPicker"></mat-datepicker-toggle>
+        <mat-datepicker #finishedPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!project.name">
+    <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>
