@@ -1,0 +1,61 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  # api_base: "https://api.openai.com/v1"  # Or your LLM provider
+  api_base: "http://localhost:11434/v1"
+  models:
+    - name: "gpt-oss:20b" # "deepseek-coder:6.7b" # "gpt-4.1-mini" # "codex-mini-latest" # "gpt-4"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+  api_key: "SECRET"
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "combined_score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+  cascade_evaluation: false
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You optimize the given Python code. Do NOT send any explanations or notes. Give ONLY the code and NO additional text like "sure, here is the code".
+
+    PROBLEM CONTEXT:
+    Your task is to refine a sales forecasting algorithm.
+    - Input: A DataFrame containing 'day_num', 'region', 'product', and 'amount'.
+    - Output: A DataFrame with predictions for a specific future day.
+    - The baseline implementation uses a simple average, which is inaccurate for data with trends.
+    - **Goal**: Implement a robust trend-following logic (like linear regression) to minimize the error.
+
+    PERFORMANCE METRICS:
+    1.  **combined_score**: Derived from MAE (Mean Absolute Error). 1.0 is perfect.
+    2.  **accuracy**: Maximized when error is low.
+    3.  **efficiency**: Code should run quickly.
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Results must be reproducible.
+    - **Robustness**: Handle edge cases (missing data, single points) gracefully.
+    - **Code only**: Provide **only** the source code (Python). No Markdown, no chat.
+    - **Imports**: You may use pandas, numpy, and scipy.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "DEBUG"
