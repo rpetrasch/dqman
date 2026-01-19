@@ -1,0 +1,28 @@
+
+llm:
+  # General configuration
+  base_url: "http://localhost:11434/v1"
+  api_key: "ollama"  # Ollama usually doesn't require a real key
+  
+  # User/Router LLM (Handles interaction and high-level decisions)
+  user_model: "gpt-oss:20b"
+  
+  # Coder LLM (Handles implementation of new tools)
+  coder_model: "gpt-oss:20b"
+  
+  # Tool Agent LLM (Handles existing tool usage)
+  agent_model: "gpt-oss:20b"
+
+execution:
+  # Path where dynamic tools will be saved and loaded from
+  tools_dir: "sources/dynamic_tools"
+  safe_mode: false # If true, might restrict imports (future feature)
+
+data:
+  # Directory containing the data files
+  directory: "./data"
+  # Name of the CSV file to load
+  filename: "sales_data.csv"
+
+logging:
+  level: "WARN"
