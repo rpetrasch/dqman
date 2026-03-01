@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>1.4.2_dq_dimension_traceability</artifactId>
+    <artifactId>2_dq_dimension_traceability</artifactId>
     <name>1.4.2 DQ Dimension Traceability</name>
 
     <properties>

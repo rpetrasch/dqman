@@ -1,0 +1,23 @@
+graph TD
+    START((Start)) --> lookup
+    lookup[Lookup Agent<br>Search Wikipedia] --> validate[Validation Agent<br>Compare Input vs Wiki]
+    validate --> check{Check Validation}
+    check -- "Valid" --> extract[Extraction Agent]
+    check -- "Invalid" --> END((End))
+    extract --> END
+    
+    subgraph "Agents"
+    lookup
+    validate
+    extract
+    end
+
+    subgraph "Tools"
+    search_wiki([search_wikipedia])
+    search_wiki_full([search_wikipedia_full_content])
+    calc_age_tool([calc_age])
+    end
+
+    lookup -.-> search_wiki
+    lookup -.-> search_wiki_full
+    extract -.-> calc_age_tool

@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>1.4.6_redundancy</artifactId>
+    <artifactId>6_redundancy</artifactId>
     <name>1.4.6 Redundancy I</name>
 
     <properties>

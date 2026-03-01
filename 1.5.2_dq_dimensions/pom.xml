@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>1.4.2_dq_dimensions</artifactId>
+    <artifactId>2_dq_dimensions</artifactId>
     <name>1.4.2 DQ Dimensions (Consistency)</name>
 
     <properties>

@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>1.4.1.3_QbD</artifactId>
+    <artifactId>3_QbD</artifactId>
     <name>1.4.1.3 Quality by Design</name>
 
 </project>
