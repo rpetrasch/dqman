@@ -11,3 +11,6 @@ Flask
 matplotlib
 ollama
 pandera
+geopy
+certifi
+rapidfuzz

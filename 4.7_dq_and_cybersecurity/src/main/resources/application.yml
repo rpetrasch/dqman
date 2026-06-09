@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: email-session-security
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/security_db
+    username: security_user
+    password: security_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: pipeline-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 100
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=300s
+
+server:
+  port: 8081
+
+app:
+  kafka:
+    topics:
+      email: logs.email
+      idp: logs.idp
+      network: logs.network
+      geolocation: logs.geolocation
+      alerts: security.alerts
+  detection:
+    failed-login-window-minutes: 5
+    failed-login-threshold: 3
+    excessive-download-threshold: 50
+    session-duration-sigma: 3.0
+    impossible-travel-hours: 3
+    off-hours-start: "22:00"
+    off-hours-end: "06:00"
+    smtp-allowlist: smtp.corp.example.com,mail.corp.example.com
+  scheduling:
+    post-session-delay-ms: 60000
+  generator:
+    enabled: true
+    interval-ms: 8000
