@@ -8,9 +8,9 @@ This is the official homepage for our book project "Data Quality for Software En
 - Call for contribution / participation: Write us an email [Richard Petrasch](mailto:richardroland2004@gmail.com), [Roland Petrasch](mailto:roland.petrasch@gmail.com)
 
 # Current Version
-- Please note that the current version of the book is still work in progress (version 1.0 as of Mar. 2026)
+- Please note that the current version of the book is still work in progress (version 1.1 as of June 2026)
 - We appreciate your feedback, ideas, discussion, and other contributions
-- The next update is planned for May 2026
+- The next update is planned for Nov. 2026
 
 # Addtional Resources
 - Will be published here soon.
