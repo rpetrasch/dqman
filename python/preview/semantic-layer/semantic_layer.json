@@ -1,0 +1,67 @@
+{
+  "domain": "residential_lease_agreements",
+  "description": "Semantic data model for facts commonly extracted from residential lease agreements. Defines canonical field names, the natural-language synonyms/aliases a drafter might use for each, a plain-language explanation of what the field means, and derived fields that must be computed rather than read literally from a single sentence.",
+
+  "entities": {
+    "Landlord": {
+      "synonyms": ["Lessor", "Owner", "Property Manager (if acting as owner's agent)"],
+      "explanation": "The party granting the right to occupy the Premises."
+    },
+    "Tenant": {
+      "synonyms": ["Lessee", "Renter", "Occupant"],
+      "explanation": "The party paying for and occupying the Premises."
+    }
+  },
+
+  "fields": {
+    "base_rent": {
+      "canonical_name": "Base Rent",
+      "synonyms": ["Cold Rent", "Kaltmiete", "Net Rent"],
+      "type": "currency_per_month",
+      "explanation": "The core rent payment for use of the Premises, EXCLUDING utilities, service charges, or maintenance reimbursements. This is a component of Total Monthly Payment, not the full amount the tenant pays each month."
+    },
+    "additional_costs": {
+      "canonical_name": "Additional Costs",
+      "synonyms": ["Utilities", "Service Charges", "Nebenkosten", "Ancillary Costs", "Operating Costs"],
+      "type": "currency_per_month",
+      "explanation": "Recurring costs beyond Base Rent, such as heating, water, waste disposal, and building maintenance, that are billed to the tenant alongside Base Rent."
+    },
+    "total_monthly_payment": {
+      "canonical_name": "Total Monthly Payment",
+      "synonyms": ["Total Rent", "Warm Rent", "Gross Rent", "Monthly Amount Due"],
+      "type": "currency_per_month",
+      "explanation": "The full amount the tenant must pay each month for the Premises.",
+      "derived": true,
+      "formula": "total_monthly_payment = base_rent + additional_costs",
+      "note": "This figure is rarely stated as a single number in a contract. It must be computed by summing Base Rent and Additional Costs, which are typically defined in separate clauses."
+    },
+    "security_deposit": {
+      "canonical_name": "Security Deposit",
+      "synonyms": ["Bond", "Kaution", "Damage Deposit", "Security"],
+      "type": "currency",
+      "explanation": "A refundable sum held by the landlord to cover unpaid rent or damage beyond normal wear and tear, returned (minus lawful deductions) after the tenancy ends.",
+      "derived": "sometimes",
+      "formula_hint": "Often expressed as a multiple of Base Rent (e.g., '2x Base Rent') rather than a fixed dollar figure. When expressed this way, compute the dollar amount using the current base_rent value.",
+      "caution": "Do not confuse with Additional Costs or an application fee. If the contract states the deposit as 'N times the Base Rent', resolve it to a dollar amount using base_rent, not additional_costs or total_monthly_payment."
+    },
+    "termination_notice_period": {
+      "canonical_name": "Termination Notice Period",
+      "synonyms": ["Notice Period", "Kündigungsfrist", "Notice of Termination", "Cancellation Notice"],
+      "type": "duration",
+      "explanation": "The minimum advance written notice either party must give before ending the lease at the end of its term. Distinct from notice periods that apply specifically to breach/default scenarios, which may be shorter.",
+      "caution": "A contract may state multiple notice periods for different situations (e.g., ordinary end-of-term termination vs. termination for breach/non-payment). Unless the question specifies 'for breach' or 'for non-payment', report the standard end-of-term notice period, not the breach-specific one."
+    },
+    "lease_term_length": {
+      "canonical_name": "Lease Term Length",
+      "synonyms": ["Initial Term", "Term Length", "Duration"],
+      "type": "duration",
+      "explanation": "The length of the initial, fixed period of tenancy before renewal or termination provisions apply."
+    }
+  },
+
+  "usage_notes": [
+    "When a requested fact is not stated as a single literal number, check whether it is a derived field (see 'derived' and 'formula') and compute it from its components.",
+    "When contract language uses a synonym or a foreign-language term (e.g., 'Kaution', 'Kündigungsfrist', 'Bond', 'Cold Rent'), map it to the canonical field it refers to before answering.",
+    "Prefer the standard/general clause over an exception clause unless the question explicitly asks about the exception (e.g., breach, default, early termination)."
+  ]
+}
