@@ -1,5 +1,33 @@
 [![Book Data Quality for Software Engineers](/assets/images/DQ_Book_Banner.png)](https://dqman.org)
 
+<p align="center">
+  
+  **Languages & Frameworks**
+  
+[![Java](https://shields.io)](https://oracle.com)
+[![Python](https://shields.io)](https://python.org)
+[![Rust](https://shields.io)](https://rust-lang.org)
+[![C](https://shields.io)](https://cppreference.com)
+[![Docker](https://shields.io)](https://docker.com)
+
+  **Databases & DevOps**
+
+[![PostgreSQL](https://shields.io)](https://postgresql.org)
+[![Docker](https://shields.io)](https://docker.com)
+
+  **Book & License**
+  
+[![Book](https://shields.io)](https://www.researchgate.net/publication/398529534_Data_Quality_for_Software_Engineers_-_Towards_Data_Quality_Excellence_AI-ready_Data_reliable_Business_Intelligence_optimized_Operations_trustworthy_Decisions_Part_I_Fundamentals)
+[![License: GPL v3](https://shields.io)](https://gnu.org)
+
+  **Contact**
+
+[![LinkedIn](https://shields.io)](https://www.linkedin.com/in/rolandpetrasch/)
+[![Gmail](https://shields.io)](mailto:roland.petrasch@gmail.com)
+[![Website](https://shields.io)](https://dqman.org)
+
+</p>
+
 # Code Examples for the Book 
 
 ## General information for Java projects
