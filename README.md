@@ -15,6 +15,7 @@
 [![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)](https://git-scm.com/)
 
 ### AI & Machine Learning
+[![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&logo=langchain&logoColor=white)](https://www.langchain.com/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)](https://tensorflow.org/)
 [![HuggingFace](https://img.shields.io/badge/Hugging_Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/)
@@ -22,6 +23,7 @@
 
 ### Book & License
 [![Book](https://img.shields.io/badge/Book-Data_Quality_for_Software_Engineers-0066CC?style=flat-square&logo=bookstack&logoColor=white)](https://www.researchgate.net/publication/398529534_Data_Quality_for_Software_Engineers_-_Towards_Data_Quality_Excellence_AI-ready_Data_reliable_Business_Intelligence_optimized_Operations_trustworthy_Decisions_Part_I_Fundamentals)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Documentation-0052CC?style=flat-square&logo=bookstack&logoColor=white)](https://deepwiki.com/rpetrasch/dqman)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL_v3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 
 ### Contact

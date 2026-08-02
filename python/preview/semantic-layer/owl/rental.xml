@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lrml:LegalRuleML
+  xmlns:xsi="http://w3.org"
+  xmlns:ruleml="http://ruleml.org"
+  xmlns:lrml="http://oasis-open.org"
+  xsi:schemaLocation="http://oasis-open.org lgmd.xsd">
+
+  <!-- Metadata: Define the legal source document -->
+  <lrml:LegalSources>
+    <lrml:LegalSource key="rental_contract_v1" sameAs="https://example.com"/>
+  </lrml:LegalSources>
+
+  <!-- Context block linking the rule to the legal source -->
+  <lrml:Contexts>
+    <lrml:Context key="contract_context">
+      <lrml:hasLegalSource ref="rental_contract_v1"/>
+    </lrml:Context>
+  </lrml:Contexts>
+
+  <!-- The Actual Normative Rules Block -->
+  <lrml:PrescriptiveStatement key="ps_rent_clause">
+    <ruleml:Rule key="rule_rent_payment">
+
+      <!-- IF: The tenant has an active lease agreement -->
+      <ruleml:body>
+        <ruleml:And>
+          <ruleml:Atom>
+            <ruleml:Rel>hasActiveLease</ruleml:Rel>
+            <ruleml:Var>tenant</ruleml:Var>
+            <ruleml:Var>landlord</ruleml:Var>
+          </ruleml:Atom>
+          <ruleml:Atom>
+            <ruleml:Rel>currentDate</ruleml:Rel>
+            <ruleml:Var>1st_of_month</ruleml:Var>
+          </ruleml:Atom>
+        </ruleml:And>
+      </ruleml:body>
+
+      <!-- THEN: The tenant is under an OBLIGATION to pay rent -->
+      <ruleml:head>
+        <lrml:Obligation>
+          <lrml:hasBearer><ruleml:Var>tenant</ruleml:Var></lrml:hasBearer>
+          <lrml:hasAction>
+            <ruleml:Atom>
+              <ruleml:Rel>payRentAmount</ruleml:Rel>
+              <ruleml:Var>tenant</ruleml:Var>
+              <ruleml:Var>landlord</ruleml:Var>
+            </ruleml:Atom>
+          </lrml:hasAction>
+        </lrml:Obligation>
+      </ruleml:head>
+
+    </ruleml:Rule>
+  </lrml:PrescriptiveStatement>
+
+  <!-- Defeasible rule: Handle what happens if they violate the obligation -->
+  <lrml:PrescriptiveStatement key="ps_late_fee_clause">
+    <ruleml:Rule key="rule_late_fee">
+      <ruleml:body>
+        <ruleml:And>
+          <ruleml:Atom>
+            <ruleml:Rel>currentDate</ruleml:Rel>
+            <ruleml:Var>after_1st_of_month</ruleml:Var>
+          </ruleml:Atom>
+          <!-- Checks for a violation of the previous rule -->
+          <ruleml:Atom>
+            <ruleml:Rel>hasNotPaidRent</ruleml:Rel>
+            <ruleml:Var>tenant</ruleml:Var>
+          </ruleml:Atom>
+        </ruleml:And>
+      </ruleml:body>
+      <ruleml:head>
+        <lrml:Obligation>
+          <lrml:hasBearer><ruleml:Var>tenant</ruleml:Var></lrml:hasBearer>
+          <lrml:hasAction>
+            <ruleml:Atom>
+              <ruleml:Rel>payLateFee</ruleml:Rel>
+              <ruleml:Var>tenant</ruleml:Var>
+            </ruleml:Atom>
+          </lrml:hasAction>
+        </lrml:Obligation>
+      </ruleml:head>
+    </ruleml:Rule>
+  </lrml:PrescriptiveStatement>
+
+</lrml:LegalRuleML>
